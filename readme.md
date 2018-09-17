@@ -25,7 +25,7 @@ This will start a setup wizard where you define:
 
 The service is now created, but not active. To activate the service
 
-> php artisan service:update <version>/<service name> (eg. V1/SampleService)
+> php artisan service:update $version/$service name (eg. V1/SampleService)
 
 This will activate the service which means:
 
