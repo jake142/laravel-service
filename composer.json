@@ -1,6 +1,6 @@
 {
     "name": "jake142/laravel-service",
-    "description": "A package to split a laravel service into smaller pieces",
+    "description": "A package to split a laravel project into smaller services",
     "type": "library",
     "license": "MIT",
     "authors": [
