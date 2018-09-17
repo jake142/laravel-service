@@ -2,7 +2,7 @@
 
 A package to devide Laravel into smaller services. Then main main goal of this package is:
 
-1. Easier to read the code since the code can bli split into services
+1. More readable, since the code is split into services
 2. Possibillity to scale services as needed
 3. Easier devide work between developers
 
