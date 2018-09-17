@@ -4,6 +4,7 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Jake142\Service\Commands\CreateService;
 use Jake142\Service\Commands\ListService;
 use Jake142\Service\Commands\UpdateService;
+use Jake142\Service\Commands\RunService;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -23,6 +24,7 @@ class ServiceProvider extends BaseServiceProvider
                 CreateService::class,
                 ListService::class,
                 UpdateService::class,
+                RunService::class,
             ]);
         }
     }
