@@ -34,11 +34,5 @@ class ServiceProvider extends BaseServiceProvider
      * @return void
      */
     public function register()
-    {
-        //$this->commands('Jake142\Service\Commands\Service');
-        /*$this->app->singleton(MyPackage::class, function () {
-            return new MyPackage();
-        });
-        $this->app->alias(MyPackage::class, 'laravel-service');*/
-    }
+    {}
 }
