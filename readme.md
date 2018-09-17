@@ -8,7 +8,7 @@ A package to devide Laravel into smaller services. Then main main goal of this p
 
 #### Installation
 
-Simply run composer require Jake142/laravel-services (not available yet)
+Simply run composer require jake142/laravel-services
 
 #### Usage
 
