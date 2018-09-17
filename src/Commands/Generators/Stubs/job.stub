@@ -1,21 +1,16 @@
 <?php $NAMESPACE$;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Jake142\Service\Job;
+use Log;
 
 /**
- * An example job. Note the queue attribute beeing set to a unique service
+ * An example job
  */
-class ExampleJob implements ShouldQueue
+class ExampleJob extends Job
 {
-	use InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct()
-    {
-        self::onQueue('$VERSION$/$SERVICE$');
-    }
+    protected $queueName = '$VERSION$/$SERVICE$';
+    protected $priority = 'medium'; //Can be low, high or medium
 
     /**
      * Execute the job.
@@ -27,6 +22,7 @@ class ExampleJob implements ShouldQueue
        try
         {
             //Your code goes here...
+            Log::info('Code has run');
         }
         catch(\Exception $e)
         {

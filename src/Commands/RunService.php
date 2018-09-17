@@ -10,7 +10,7 @@ class RunService extends Command
      *
      * @var string
      */
-    protected $signature = 'service:run {--mode=}';
+    protected $signature = 'service:run';
 
     /**
      * The description of command.
@@ -28,27 +28,36 @@ class RunService extends Command
     public function handle(){
         try
         {
-            //Set parameters
-            if($this->option('mode')=='work' or $this->option('mode')=='listen') {
-                $mode = $this->option('mode');
-            }
-            else {
-                throw new \Exception('Parameter {mode} can only be work or listen');
-            }
+
             $services = config('appservices');
             if(!empty($services)) {
                 $queues = '';
+                //Setup queue high
                 foreach($services as $key=>$value) {
                     if($value==1) {
-                        $queues = $queues . $key . ',';
+                        $queues = $queues . $key . '*high,';
                     }
                 }
+                //Setup queue medium
+                foreach($services as $key=>$value) {
+                    if($value==1) {
+                        $queues = $queues . $key . '*medium,';
+                    }
+                }
+                //Setup queue low
+                foreach($services as $key=>$value) {
+                    if($value==1) {
+                        $queues = $queues . $key . '*low,';
+                    }
+                }
+                if($queues=='')
+                    throw new \Exception('There is no active services. Run php artisan service:create to create a service.');
                 $queues = rtrim($queues,',');
-                $serviceRegistered = Artisan::call('queue:'.$mode, [
+                $serviceRegistered = Artisan::call('queue:work', [
                     '--queue' => $queues
                 ]);
             } else {
-                $this->error('There is no active services. Run php artisan service:create to create a service.');
+                throw new \Exception('There is no active services. Run php artisan service:create to create a service.');
             }
 
         }
