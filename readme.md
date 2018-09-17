@@ -32,6 +32,10 @@ This will activate the service which means:
 1. The routes will be accessible
 2. The jobs can be run
 
+To get an overview of all services, both active and inactive, run:
+
+> php artisan service:list
+
 #### Jobs
 
 The jobs has two properties:
