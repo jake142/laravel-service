@@ -1,0 +1,36 @@
+<?php $NAMESPACE$;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+/**
+ * An example job. Note the queue attribute beeing set to a unique service
+ */
+class ExampleJob implements ShouldQueue
+{
+	use InteractsWithQueue, Queueable, SerializesModels;
+
+    public function __construct()
+    {
+        self::onQueue('$VERSION$/$SERVICE$');
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+       try
+        {
+            //Your code goes here...
+        }
+        catch(\Exception $e)
+        {
+            throw $e;
+        }
+    }
+}

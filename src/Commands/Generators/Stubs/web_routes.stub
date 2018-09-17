@@ -1,0 +1,3 @@
+<?php
+
+Route::get('/$VERSION$/$SERVICE$/web', 'Service@web')->name('web');

@@ -1,0 +1,30 @@
+<?php $NAMESPACE$;
+
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller as BaseController;
+/**
+ * Class Service
+ *
+ * Controller class Service
+ */
+class Service extends BaseController
+{
+    /**
+     * api method
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function api(Request $request)
+    {
+        return response()->json(['Start coding!']);
+    }
+    /**
+     * web method
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function web(Request $request)
+    {
+        return response('Start coding!');
+    }
+}

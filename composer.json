@@ -1,0 +1,27 @@
+{
+    "name": "jake142/laravel-service",
+    "description": "A package to split a laravel service into smaller pieces",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marc McKenzie",
+            "email": "imjake142@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Jake142\\Service\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jake142\\Service\\ServiceProvider",
+                "Jake142\\Service\\RouteServiceProvider"
+            ]
+        }
+    }
+}
