@@ -1,10 +1,10 @@
 ## Laravel Services
 
-A package to devide Laravel into smaller services. Then main goal of this package is:
+A package to divide Laravel into smaller services. Then main goal of this package is:
 
 1. Readable, the code is split into services
 2. Scalable, run services as needed
-3. Faster development, devide work between developers
+3. Faster development, split work between developers
 
 #### Installation
 
