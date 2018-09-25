@@ -5,6 +5,7 @@ use Jake142\Service\Config;
 use Jake142\Service\Commands\Generators\ServiceGenerator;
 use Jake142\Service\Commands\Generators\ControllerGenerator;
 use Jake142\Service\Commands\Generators\JobGenerator;
+use Jake142\Service\Commands\Generators\TestGenerator;
 use Illuminate\Filesystem\Filesystem;
 use Artisan;
 
@@ -55,6 +56,11 @@ class CreateService extends Command
             if($createJob=='Yes')
                 $this->createJob($name, $version);
 
+            $createTest = $this->choice('Would you like to create a Test? (recommended)', ['Yes','No'], 0);
+
+            if($createTest=='Yes')
+                $this->createTest($name, $version);
+
             $serviceRegistered = Artisan::call('vendor:publish', [
                 '--provider' => 'Jake142\Service\ServiceProvider',
             ]);
@@ -101,5 +107,13 @@ class CreateService extends Command
      */
     private function createJob($name, $version) {
         (new JobGenerator($name, $version))->run();
+    }
+    /**
+     * Create the test
+     *
+     * @return void
+     */
+    private function createTest($name, $version) {
+        (new TestGenerator($name, $version))->run();
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Console\Command;
 use Jake142\Service\Config;
+use Jake142\Service\PhpunitXML;
 
 class UpdateService extends Command
 {
@@ -37,10 +38,16 @@ class UpdateService extends Command
                     $choiceArr = ['DEACTIVATE','CANCEL'];
                 $choice = $this->choice('The service is currently '.($status==0 ? 'INACTIVE':'ACTIVE').'. Would you like to '.($status==0 ? 'activate':'deactivate').' it?', $choiceArr, 0);
                 if($choice=='ACTIVATE') {
+                    //Add to cfg
                     $result = (new Config())->setServiceStatus($this->argument('id'), 1);
+                    //Add to php unit
+                    (new PhpunitXML())->addService($this->argument('id'));
                     $this->info('The service is now activated');
                 } else if($choice=='DEACTIVATE') {
+                    //Add to cfg
                     $result = (new Config())->setServiceStatus($this->argument('id'), 0);
+                    //Remove from php unit
+                    (new PhpunitXML())->removeService($this->argument('id'));
                     $this->info('The service is now deactivated');
                 } else {
                     $this->info('Ok, the service state is unchanged');
