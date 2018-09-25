@@ -24,6 +24,7 @@ This will start a setup wizard where you define:
 2. The version of the service (eg. V1)
 3. If you want a sample controller (recommended)
 4. If you want a sample job (recommended)
+4. If you want a sample test (recommended)
 
 The service is now created, but not active. To activate the service
 
@@ -33,6 +34,9 @@ This will activate the service which means:
 
 1. The routes will be accessible
 2. The jobs can be run
+3. The tests will be added to the phpunit.xml and therefore able to run with the phpunit command.
+
+The above will be reversed if you choose to deactivate your service.
 
 To get an overview of all services, both active and inactive, run:
 
