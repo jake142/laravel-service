@@ -34,7 +34,7 @@ This will activate the service which means:
 
 1. The routes will be accessible
 2. The jobs can be run
-3. The tests will be added to the phpunit.xml and therefore able to run with the phpunit command.
+3. The tests will be added to the phpunit.xml and therefore able to run with the phpunit command
 
 The above will be reversed if you choose to deactivate your service.
 

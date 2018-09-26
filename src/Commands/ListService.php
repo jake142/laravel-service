@@ -1,6 +1,7 @@
 <?php namespace Jake142\Service\Commands;
 
 use Illuminate\Console\Command;
+use Jake142\Service\Config;
 
 class ListService extends Command
 {
@@ -27,13 +28,13 @@ class ListService extends Command
     public function handle(){
         try
         {
-            $services = config('appservices');
+            $services = (new Config())->readConfig();
             if(empty($services)) {
                 $this->error('You have no services created. Run php artisan service:create'); 
             }
             else {
                 foreach($services as $key => $value)
-                    $this->info($key . ' status:' . ($value==0 ? 'INACTIVE':'ACTIVE'));                
+                    $this->info($key . ' status:' . ($value['status']==0 ? 'INACTIVE':'ACTIVE'));                
             }
 
 

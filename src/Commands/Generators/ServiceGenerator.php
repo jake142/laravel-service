@@ -50,6 +50,7 @@ class ServiceGenerator
         $this->filesystem->makeDirectory(app_path().'/Services/'.$this->version.'/'.$this->name.'/Jobs', 0777, true, true);
         $this->filesystem->makeDirectory(app_path().'/Services/'.$this->version.'/'.$this->name.'/routes', 0777, true, true);
         $this->filesystem->makeDirectory(app_path().'/Services/'.$this->version.'/'.$this->name.'/tests', 0777, true, true);
+        $this->filesystem->makeDirectory(app_path().'/Services/'.$this->version.'/'.$this->name.'/config', 0777, true, true);
     }
     /**
      * Check if service exist

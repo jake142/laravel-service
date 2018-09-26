@@ -16,7 +16,7 @@ class ServiceProvider extends BaseServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/config/appservices.php' => config_path('appservices.php')
+            __DIR__ . '/config/laravel-service.php' => config_path('laravel-service.php')
         ]);
         //Setting up commands
         if ($this->app->runningInConsole()) {

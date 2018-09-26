@@ -29,8 +29,10 @@ class UpdateService extends Command
     public function handle(){
         try
         {
-            if(isset(config('appservices')[$this->argument('id')])) {
-                $status = config('appservices')[$this->argument('id')];
+            $id = $this->argument('id');
+            $services = (new Config())->readConfig();
+            if(isset($services[$id])) {
+                $status = $services[$id]['status'];
                 $choiceArr = [];
                 if($status==0)
                     $choiceArr = ['ACTIVATE','CANCEL'];
@@ -39,13 +41,13 @@ class UpdateService extends Command
                 $choice = $this->choice('The service is currently '.($status==0 ? 'INACTIVE':'ACTIVE').'. Would you like to '.($status==0 ? 'activate':'deactivate').' it?', $choiceArr, 0);
                 if($choice=='ACTIVATE') {
                     //Add to cfg
-                    $result = (new Config())->setServiceStatus($this->argument('id'), 1);
+                    $result = (new Config())->setServiceStatus($id, 1);
                     //Add to php unit
                     (new PhpunitXML())->addService($this->argument('id'));
                     $this->info('The service is now activated');
                 } else if($choice=='DEACTIVATE') {
                     //Add to cfg
-                    $result = (new Config())->setServiceStatus($this->argument('id'), 0);
+                    $result = (new Config())->setServiceStatus($id, 0);
                     //Remove from php unit
                     (new PhpunitXML())->removeService($this->argument('id'));
                     $this->info('The service is now deactivated');
@@ -55,7 +57,7 @@ class UpdateService extends Command
 
             } else {
                 $this->error('Service '. $this->argument('id') . ' not found. Run php artisan service:list to see available services.');
-                $this->comment('Note that services are case sensitive'); 
+                $this->error('!!! Note that services are case sensitive !!!');
             }
 
         }

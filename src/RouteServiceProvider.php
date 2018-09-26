@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Jake142\Service\Config;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -22,12 +23,12 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map()
     {
-        $services = config('appservices');
+        $services = (new Config())->readConfig();
         if(!empty($services))
         {
             foreach($services as $key => $value)
             {
-                if($value==1)
+                if($value['status']==1)
                 {
                     Route::namespace('\\App\\Services\\'.str_replace("/", "\\", $key).'\\Http\\Controllers')->group(app_path('Services/'.$key.'/routes/web.php'));
                     Route::namespace('\\App\\Services\\'.str_replace("/", "\\", $key).'\\Http\\Controllers')->group(app_path('Services/'.$key.'/routes/api.php'));
