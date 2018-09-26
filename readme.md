@@ -42,6 +42,12 @@ To get an overview of all services, both active and inactive, run:
 
 > php artisan service:list
 
+#### Config
+
+Each service can have one or more separate config files. To access these config values you run:
+
+config('laravel-service.$version/$service.cfg.$nameOfCfgFile.VALUE_IN_THE_CFG_FILE')
+
 #### Jobs
 
 The jobs has two properties:
