@@ -24,7 +24,7 @@ class Composer extends BaseComposer
         if(isset($composer['repositories'])) {
             $composer['repositories'][] = ['type'=>'path','url'=>'Services/'.$version.'/'.$name,'options'=>['symlink'=>true]];
         } else {
-            $composer[] = ['repositories'=>['type'=>'path','url'=>'Services/'.$version.'/'.$name,'options'=>['symlink'=>true]]];
+            $composer['repositories'][] = ['type'=>'path','url'=>'Services/'.$version.'/'.$name,'options'=>['symlink'=>true]];
         }
         $composer['minimum-stability'] = 'dev';
         $composer['prefer-stable'] = true;
