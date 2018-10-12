@@ -2,7 +2,7 @@
 
 ## Release note
 
-Version 0.1.0 is a complete rewrite of the package. Version 0.1.0 now creates each service as a composer package and uses composer to add it to your project. It is tested in laravel version 5.6. Previous versions are not supported anymore.
+Version 0.1.X is a complete rewrite of the package. Version 0.1.X now creates each service as a composer package and uses composer to add it to your project. It is tested in laravel version 5.6. Previous versions are not supported anymore.
 
 PLEASE NOTE
 

@@ -45,7 +45,7 @@ class Composer extends BaseComposer
             {
                 if(isset($repository['url']) && strpos($repository['url'], 'Services/') === 0) {
                      $serviceName = str_replace('Services/','',$repository['url']);
-                     $serviceEnabled = (isset($composer['require'][$serviceName]) ? 'ENABLED':'DISABLED');
+                     $serviceEnabled = (isset($composer['require']['Services/'.$serviceName]) ? 'ENABLED':'DISABLED');
                      $services[$serviceName] = $serviceEnabled;
                 }
             }
