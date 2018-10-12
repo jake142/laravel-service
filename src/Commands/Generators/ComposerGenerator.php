@@ -3,10 +3,10 @@
 use Jake142\Service\Commands\Generators\Generator;
 
 /**
- * Class TestGenerator
+ * Class ComposerGenerator
  * @package Jake142\Service\Generators
  */
-class TestGenerator
+class ComposerGenerator
 {
     /**
      * The name of the service
@@ -37,10 +37,9 @@ class TestGenerator
     public function run()
     {
         $replaces = [
-            'namespace' => 'namespace Services\\'.$this->version.'\\'.$this->name.'\\Test',
-            'service' => strtolower($this->name),
-            'version' => strtolower($this->version)
+            'service' => $this->name,
+            'version' => $this->version
         ];
-        (new Generator(base_path().'/Services/'.$this->version.'/'.$this->name.'/tests/ExampleTest.php', 'test', $replaces))->run();
+        (new Generator(base_path().'/Services/'.$this->version.'/'.$this->name.'/composer.json', 'composer', $replaces))->run();
     }
 }

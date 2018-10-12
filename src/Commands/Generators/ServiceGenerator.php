@@ -44,13 +44,15 @@ class ServiceGenerator
      */
     public function run()
     {
-        $this->filesystem->makeDirectory(app_path().'/Services/'.$this->version.'/'.$this->name.'/Http/Controllers', 0777, true, true);
-        $this->filesystem->makeDirectory(app_path().'/Services/'.$this->version.'/'.$this->name.'/Http/Middleware', 0777, true, true);
-        $this->filesystem->makeDirectory(app_path().'/Services/'.$this->version.'/'.$this->name.'/Models', 0777, true, true);
-        $this->filesystem->makeDirectory(app_path().'/Services/'.$this->version.'/'.$this->name.'/Jobs', 0777, true, true);
-        $this->filesystem->makeDirectory(app_path().'/Services/'.$this->version.'/'.$this->name.'/routes', 0777, true, true);
-        $this->filesystem->makeDirectory(app_path().'/Services/'.$this->version.'/'.$this->name.'/tests', 0777, true, true);
-        $this->filesystem->makeDirectory(app_path().'/Services/'.$this->version.'/'.$this->name.'/config', 0777, true, true);
+        $this->filesystem->makeDirectory(base_path().'/Services/'.$this->version.'/'.$this->name.'/Providers', 0777, true, true);
+        $this->filesystem->makeDirectory(base_path().'/Services/'.$this->version.'/'.$this->name.'/Http/Controllers', 0777, true, true);
+        $this->filesystem->makeDirectory(base_path().'/Services/'.$this->version.'/'.$this->name.'/Http/Middleware', 0777, true, true);
+        $this->filesystem->makeDirectory(base_path().'/Services/'.$this->version.'/'.$this->name.'/Models', 0777, true, true);
+        $this->filesystem->makeDirectory(base_path().'/Services/'.$this->version.'/'.$this->name.'/Jobs', 0777, true, true);
+        $this->filesystem->makeDirectory(base_path().'/Services/'.$this->version.'/'.$this->name.'/routes', 0777, true, true);
+        $this->filesystem->makeDirectory(base_path().'/Services/'.$this->version.'/'.$this->name.'/tests', 0777, true, true);
+        $this->filesystem->makeDirectory(base_path().'/Services/'.$this->version.'/'.$this->name.'/config', 0777, true, true);
+        $this->filesystem->makeDirectory(base_path().'/Services/'.$this->version.'/'.$this->name.'/migrations', 0777, true, true);
     }
     /**
      * Check if service exist
@@ -58,7 +60,7 @@ class ServiceGenerator
      */
     public function exist()
     {
-        if(file_exists(app_path().'/Services/'.$this->version.'/'.$this->name)) {
+        if(file_exists(base_path().'/Services/'.$this->version.'/'.$this->name)) {
             throw new \Exception('Service already exist');
         } else {
             return $this;

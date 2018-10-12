@@ -1,10 +1,11 @@
 <?php namespace Jake142\Service;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Jake142\Service\Commands\CreateService;
+use Jake142\Service\Commands\MakeService;
 use Jake142\Service\Commands\ListService;
-use Jake142\Service\Commands\UpdateService;
-use Jake142\Service\Commands\RunService;
+use Jake142\Service\Commands\EnableService;
+use Jake142\Service\Commands\DisableService;
+use Jake142\Service\Composer;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -15,16 +16,16 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
+        /*$this->publishes([
             __DIR__ . '/config/laravel-service.php' => config_path('laravel-service.php')
-        ]);
+        ]);*/
         //Setting up commands
         if ($this->app->runningInConsole()) {
             $this->commands([
-                CreateService::class,
+                MakeService::class,
                 ListService::class,
-                UpdateService::class,
-                RunService::class,
+                EnableService::class,
+                DisableService::class,
             ]);
         }
     }
@@ -34,5 +35,12 @@ class ServiceProvider extends BaseServiceProvider
      * @return void
      */
     public function register()
-    {}
+    {
+        $this->app->singleton('composer', function ($app) {
+            return new Composer($app['files'], $app->basePath());
+        });
+        $this->app->singleton('phpunitxml', function ($app) {
+            return new PhpunitXML();
+        });
+    }
 }

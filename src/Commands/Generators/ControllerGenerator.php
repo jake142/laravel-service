@@ -37,22 +37,22 @@ class ControllerGenerator
     public function run()
     {
         $replaces = [
-            'namespace' => 'namespace App\\Services\\'.$this->version.'\\'.$this->name.'\\Http\\Controllers'
+            'namespace' => 'namespace Services\\'.$this->version.'\\'.$this->name.'\\Http\\Controllers'
         ];
-        (new Generator(app_path().'/Services/'.$this->version.'/'.$this->name.'/Http/Controllers/Service.php', 'controller', $replaces))->run();
+        (new Generator(base_path().'/Services/'.$this->version.'/'.$this->name.'/Http/Controllers/Service.php', 'controller', $replaces))->run();
 
         //Add the routes to the controller
         $replaces = [
-            'namespace' => '\\App\\Services\\'.$this->version.'\\'.$this->name.'\\Http\\Controllers',
+            'namespace' => '\\Services\\'.$this->version.'\\'.$this->name.'\\Http\\Controllers',
             'service' => strtolower($this->name),
             'version' => strtolower($this->version)
         ];
-        (new Generator(app_path().'/Services/'.$this->version.'/'.$this->name.'/routes/api.php', 'api_routes', $replaces))->run();
+        (new Generator(base_path().'/Services/'.$this->version.'/'.$this->name.'/routes/api.php', 'api_routes', $replaces))->run();
         $replaces = [
-            'namespace' => '\\App\\Services\\'.$this->version.'\\'.$this->name.'\\Http\\Controllers',
+            'namespace' => '\\Services\\'.$this->version.'\\'.$this->name.'\\Http\\Controllers',
             'service' => strtolower($this->name),
             'version' => strtolower($this->version)
         ];
-        (new Generator(app_path().'/Services/'.$this->version.'/'.$this->name.'/routes/web.php', 'web_routes', $replaces))->run();   
+        (new Generator(base_path().'/Services/'.$this->version.'/'.$this->name.'/routes/web.php', 'web_routes', $replaces))->run();   
     }
 }

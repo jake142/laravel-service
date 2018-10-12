@@ -37,10 +37,8 @@ class JobGenerator
     public function run()
     {
         $replaces = [
-            'namespace' => 'namespace App\\Services\\'.$this->version.'\\'.$this->name.'\\Jobs',
-            'service' => $this->name,
-            'version' => $this->version
+            'namespace' => 'namespace Services\\'.$this->version.'\\'.$this->name.'\\Jobs'
         ];
-        (new Generator(app_path().'/Services/'.$this->version.'/'.$this->name.'/Jobs/ExampleJob.php', 'job', $replaces))->run();
+        (new Generator(base_path().'/Services/'.$this->version.'/'.$this->name.'/Jobs/ExampleJob.php', 'job', $replaces))->run();
     }
 }

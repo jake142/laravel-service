@@ -12,7 +12,7 @@ use Jake142\Service\Commands\Generators\TestGenerator;
 use Illuminate\Filesystem\Filesystem;
 use Artisan;
 
-class CreateService extends Command
+class MakeService extends Command
 {
     public function __construct()
     {
@@ -24,14 +24,14 @@ class CreateService extends Command
      *
      * @var string
      */
-    protected $name = 'service:create';
+    protected $name = 'service:make';
 
     /**
      * The description of command.
      *
      * @var string
      */
-    protected $description = 'Create a new service';
+    protected $description = 'Make a new service';
 
     /**
      * Execute the command.

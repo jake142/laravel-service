@@ -19,8 +19,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Jake142\\Service\\ServiceProvider",
-                "Jake142\\Service\\RouteServiceProvider"
+                "Jake142\\Service\\ServiceProvider"
             ]
         }
     }

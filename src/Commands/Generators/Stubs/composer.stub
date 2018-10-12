@@ -1,0 +1,24 @@
+{
+  "name": "Services/$VERSION$/$SERVICE$",
+  "description": "Service $VERSION$/$SERVICE$ composer.json",
+  "authors": [
+    {
+      "name": "Marc McKenzie",
+      "email": "imjake142@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "Services\\$VERSION$\\$SERVICE$\\": ""
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Services\\$VERSION$\\$SERVICE$\\Providers\\ServiceProvider"
+      ]
+    }
+  }
+}

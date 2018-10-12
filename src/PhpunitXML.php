@@ -28,7 +28,7 @@ class PhpunitXML
      * Add a service
      *
      */
-    public function addService($id)
+    public function enableService($service)
     {
 
         $domPhpunitXML = $this->readPhpunitXml();
@@ -36,10 +36,10 @@ class PhpunitXML
         $testsuitesNode = $phpunitXMLXPath->query('/phpunit/testsuites')->item(0);
         if(!is_null($testsuitesNode)) {
             $testsuiteNode = $domPhpunitXML->createElement ('testsuite');
-            $testsuiteNode->setAttribute ( 'name' , $id );
+            $testsuiteNode->setAttribute ( 'name' , $service );
             $directoryNode = $domPhpunitXML->createElement ('directory');
             $directoryNode->setAttribute ( 'suffix' , 'Test.php');
-            $directoryNodeData = $domPhpunitXML->createTextNode('./app/Services/'.$id.'/tests');
+            $directoryNodeData = $domPhpunitXML->createTextNode('./Services/'.$service.'/tests');
             $directoryNode->appendChild($directoryNodeData);
             $testsuiteNode->appendChild($directoryNode);
             $testsuitesNode->appendChild($testsuiteNode);
@@ -50,11 +50,11 @@ class PhpunitXML
      * Set a service
      *
      */
-    public function removeService($id)
+    public function disableService($service)
     {
         $domPhpunitXML = $this->readPhpunitXml();
         $phpunitXMLXPath = new \DOMXPath ( $domPhpunitXML );
-        $testsuiteNode = $phpunitXMLXPath->query("/phpunit/testsuites/testsuite[@name='".$id."']")->item(0);
+        $testsuiteNode = $phpunitXMLXPath->query("/phpunit/testsuites/testsuite[@name='".$service."']")->item(0);
         if(!is_null($testsuiteNode)) {
             $testsuiteNode->parentNode->removeChild($testsuiteNode);
             $this->writePhpunitXml($domPhpunitXML);

@@ -1,3 +1,18 @@
+## Package considered beeing in alpha state and needs more testing!
+
+## Release note
+
+Version 0.1.0 is a complete rewrite of the package. In version 0.1.0 now creates each service as a composer package and uses composer to add it to your project. It is tested in laravel version 5.6. Previous versions are not supported anymore.
+
+PLEASE NOTE
+
+laravel-services will add:
+
+"minimum-stability": "dev",
+"prefer-stable": true
+
+to your composer.json file.
+
 ## Laravel Services
 
 A package to divide Laravel into smaller services. Then main goal of this package is:
@@ -16,7 +31,7 @@ Simply run:
 
 Start by running
 
-> php artisan service:create
+> php artisan service:make
 
 This will start a setup wizard where you define:
 
@@ -26,37 +41,26 @@ This will start a setup wizard where you define:
 4. If you want a sample job (recommended)
 4. If you want a sample test (recommended)
 
-The service is now created, but not active. To activate the service
+The service is now created (added as a repository to your composer.json file), but not enabled. To enable the service
 
-> php artisan service:update $version/$service name (eg. V1/SampleService)
+> php artisan service:enable $version/$service name (eg. V1/SampleService)
 
-This will activate the service which means:
+This will enable the service which means:
 
-1. The routes will be accessible
-2. The jobs can be run
-3. The tests will be added to the phpunit.xml and therefore able to run with the phpunit command
+1. Composer runs require on your service
+2. The tests will be added to the phpunit.xml and therefore able to run with the phpunit command
 
-The above will be reversed if you choose to deactivate your service.
+#### Disable a service
 
-To get an overview of all services, both active and inactive, run:
+To disable a service run:
+
+> php artisan service:disable $version/$service name (eg. V1/SampleService)
+
+This will disable the service which means:
+
+1. Composer runs remove on your service
+2. The tests will be removed from the phpunit.xml
+
+#### List services and their status
 
 > php artisan service:list
-
-#### Config
-
-Each service can have one or more separate config files. To access these config values you run:
-
-config('laravel-service.$version/$service.cfg.$nameOfCfgFile.VALUE_IN_THE_CFG_FILE')
-
-#### Jobs
-
-The jobs has two properties:
-
-1. The queueName (that should not be changed)
-2. The priority which can be low, medium or high
-
-To run the jobs you simply run
-
-> php artisan service:run
-
-This will run all the jobs in services that are activated.

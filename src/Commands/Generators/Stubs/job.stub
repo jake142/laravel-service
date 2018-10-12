@@ -9,9 +9,6 @@ use Log;
 class ExampleJob extends Job
 {
 
-    protected $queueName = '$VERSION$/$SERVICE$';
-    protected $priority = 'medium'; //Can be low, high or medium
-
     /**
      * Execute the job.
      *

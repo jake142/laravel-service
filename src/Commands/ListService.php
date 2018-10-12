@@ -1,7 +1,7 @@
 <?php namespace Jake142\Service\Commands;
 
 use Illuminate\Console\Command;
-use Jake142\Service\Config;
+use Jake142\Service\Composer;
 
 class ListService extends Command
 {
@@ -25,16 +25,21 @@ class ListService extends Command
      * @see fire()
      * @return void
      */
-    public function handle(){
+    public function handle(Composer $composer){
         try
         {
-            $services = (new Config())->readConfig();
+            $services = $composer->listServices();
             if(empty($services)) {
                 $this->error('You have no services created. Run php artisan service:create'); 
             }
             else {
-                foreach($services as $key => $value)
-                    $this->info($key . ' status:' . ($value['status']==0 ? 'INACTIVE':'ACTIVE'));                
+                foreach($services as $key => $value) {
+                    if($value=='ENABLED') {
+                        $this->info($key . ' status:' . $value);                
+                    } else {
+                        $this->error($key . ' status:' . $value); 
+                    }
+                }
             }
 
 
