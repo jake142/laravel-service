@@ -25,7 +25,7 @@ A package to divide Laravel into smaller services. Then main goal of this packag
 
 Simply run:
 
-> composer require jake142/laravel-services
+> composer require jake142/laravel-service
 
 #### Usage
 
