@@ -1,4 +1,4 @@
-## Package considered beeing in alpha state and needs more testing!
+## This package is considered beeing in an alpha state and needs more testing!
 
 ## Release note
 
@@ -6,7 +6,7 @@ Version 0.1.0 is a complete rewrite of the package. Version 0.1.0 now creates ea
 
 PLEASE NOTE
 
-laravel-services will add:
+laravel-service will add:
 
 ```json
 "minimum-stability": "dev",
@@ -15,7 +15,7 @@ laravel-services will add:
 
 to your composer.json file.
 
-## Laravel Services
+## Laravel Service
 
 A package to divide Laravel into smaller services. Then main goal of this package is:
 
@@ -43,7 +43,11 @@ This will start a setup wizard where you define:
 4. If you want a sample job (recommended)
 4. If you want a sample test (recommended)
 
-The service is now created (added as a repository to your composer.json file), but not enabled. To enable the service
+The service is now created (added as a repository to your composer.json file), but not enabled.
+
+#### Enable a service
+
+To enable a service run:
 
 > php artisan service:enable $version/$service name (eg. V1/SampleService)
 
