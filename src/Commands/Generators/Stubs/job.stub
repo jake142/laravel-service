@@ -1,6 +1,5 @@
 <?php $NAMESPACE$;
 
-use Jake142\Service\Job;
 use Log;
 
 /**
