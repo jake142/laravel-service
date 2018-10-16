@@ -19,6 +19,7 @@ class ServiceProvider extends BaseServiceProvider
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__.'/../migrations');
+        $this->registerMiddlewares();
     }
 
     /**
@@ -33,5 +34,9 @@ class ServiceProvider extends BaseServiceProvider
     public function provides()
     {
         return [];
+    }
+    protected function registerMiddlewares()
+    {
+        //$this->app['router']->aliasMiddleware('$aliasName', '$className');
     }
 }
