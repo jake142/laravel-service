@@ -30,7 +30,7 @@ class ListService extends Command
         {
             $services = $composer->listServices();
             if(empty($services)) {
-                $this->error('You have no services created. Run php artisan service:create'); 
+                $this->error('You have no services created. Run php artisan service:make'); 
             }
             else {
                 foreach($services as $key => $value) {
