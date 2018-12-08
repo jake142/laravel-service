@@ -2,6 +2,8 @@
 
 ## Release note
 
+Version 0.1.9 includes generic jobs and queues. This is needed so one service can push data on to a queue without knowing about the code in the job.
+
 Version 0.1.X is a complete rewrite of the package. Version 0.1.X now creates each service as a composer package and uses composer to add it to your project. It is tested in laravel version 5.6. Previous versions are not supported anymore.
 
 PLEASE NOTE
@@ -70,3 +72,35 @@ This will disable the service which means:
 #### List services and their status
 
 > php artisan service:list
+
+#### Generic Queues and Jobs
+
+To call the generic queue:
+```php
+(new GenericQueue('Services\\V1\\Test\\Jobs\\ExampleJob', ['param'=>'test'], $queue = null, $options = []))->dispatch();
+```
+To run the generic job:
+
+```php
+<?php namespace Services\V1\Test\Jobs;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+use Jake142\Service\Queue\Jobs\Generic as GenericJob;
+
+/**
+ * An example job
+ */
+class ExampleJob extends GenericJob implements ShouldQueue
+{
+    use InteractsWithQueue, Queueable, SerializesModels;
+
+    public function handle() {
+        print_r($this->data);
+    }
+
+}
+```
