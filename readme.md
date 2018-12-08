@@ -2,7 +2,7 @@
 
 ## Release note
 
-Version 0.1.9 includes generic jobs and queues. This is needed so one service can push data on to a queue without knowing about the code in the job.
+Version 0.1.9 includes generic jobs and queues. This is needed so one service can push data on to a queue without knowing about the code in another service job.
 
 Version 0.1.X is a complete rewrite of the package. Version 0.1.X now creates each service as a composer package and uses composer to add it to your project. It is tested in laravel version 5.6. Previous versions are not supported anymore.
 
