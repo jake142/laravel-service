@@ -3,7 +3,7 @@
 /**
  * An Generic job
  */
-class Generic
+trait Generic
 {
 
     /**
@@ -11,7 +11,10 @@ class Generic
      */
     protected $data;
 
-
+    public function handle()
+    {
+        //The magic happens here
+    }
     public function fire($data)
     {
         $this->data = json_decode($data->getRawBody(),true)['data'];
