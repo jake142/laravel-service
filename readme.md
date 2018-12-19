@@ -2,6 +2,8 @@
 
 ## Release note
 
+Version 0.2.1 enabled automatic update of service configs. More info below.
+
 Version 0.2.0 includes generic jobs and queues. This is needed so one service can push data on to a queue without knowing about the code in another service job.
 
 Version 0.1.X is a complete rewrite of the package. Version 0.1.X now creates each service as a composer package and uses composer to add it to your project. It is tested in laravel version 5.6. Previous versions are not supported anymore.
@@ -103,4 +105,11 @@ class ExampleJob implements ShouldQueue
     }
 
 }
+```
+#### Config
+
+You can either use vendor:publish to publish the config files for each service or you can publish the laravel-service config files that will get updated when you add new configs to a service. If you use the laravel-service config file you access the config values as following:
+
+```php
+config('laravel-service.<version>.<service>.<config_file>.<value>');
 ```
