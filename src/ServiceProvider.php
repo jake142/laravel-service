@@ -16,16 +16,17 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        /*$this->publishes([
+        //Publish the cfg
+        $this->publishes([
             __DIR__ . '/config/laravel-service.php' => config_path('laravel-service.php')
-        ]);*/
+        ]);
         //Setting up commands
         if ($this->app->runningInConsole()) {
             $this->commands([
                 MakeService::class,
                 ListService::class,
                 EnableService::class,
-                DisableService::class,
+                DisableService::class
             ]);
         }
     }
