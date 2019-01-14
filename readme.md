@@ -108,7 +108,7 @@ class ExampleJob implements ShouldQueue
 ```
 #### Config
 
-You can either use vendor:publish to publish the config files for each service or you can publish the laravel-service config files that will get updated when you add new configs to a service. If you use the laravel-service config file you access the config values as following:
+You can either use vendor:publish to publish the config files for each service or you can publish the laravel-service config file which will get updated when you add new configs to a service. If you use the laravel-service config file you access the config values as following:
 
 ```php
 config('laravel-service.<version>.<service>.<config_file>.<value>');
