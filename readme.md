@@ -36,6 +36,18 @@ Simply run:
 
 > composer require lindstream/laravel-pods
 
+#### Quick Setup scaffold
+
+> php artisan pods:setup --scaffold
+
+Get quickly up and running by using the --scaffold param; This will:
+* Rename folder "app" to "common"
+* Move folder "routes" into "common/Routes"
+* Move folder "tests" into "common/Tests"
+* Reconfigure paths in moved "common/Provider" files
+
+
+
 #### Usage
 
 Start by running
