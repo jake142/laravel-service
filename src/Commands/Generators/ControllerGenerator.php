@@ -44,13 +44,13 @@ class ControllerGenerator
         //Add the routes to the controller
         $replaces = [
             'namespace' => '\\Pods\\'.$this->version.'\\'.$this->name.'\\Http\\Controllers',
-            'service'   => strtolower($this->name),
+            'pod'       => strtolower($this->name),
             'version'   => strtolower($this->version),
         ];
         (new Generator(base_path().'/pods/'.$this->version.'/'.$this->name.'/Routes/api.php', 'api_routes', $replaces))->run();
         $replaces = [
             'namespace' => '\\Pods\\'.$this->version.'\\'.$this->name.'\\Http\\Controllers',
-            'service'   => strtolower($this->name),
+            'pod'       => strtolower($this->name),
             'version'   => strtolower($this->version),
         ];
         (new Generator(base_path().'/pods/'.$this->version.'/'.$this->name.'/Routes/web.php', 'web_routes', $replaces))->run();

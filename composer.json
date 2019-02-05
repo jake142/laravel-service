@@ -1,6 +1,6 @@
 {
     "name": "jake142/laravel-pods",
-    "description": "A package to split a laravel project into smaller services",
+    "description": "A package to split a laravel project into smaller services, a.k.a. Pods",
     "type": "library",
     "license": "MIT",
     "authors": [

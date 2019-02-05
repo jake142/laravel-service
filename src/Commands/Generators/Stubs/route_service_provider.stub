@@ -10,7 +10,7 @@ class RouteServiceProvider extends BaseRouteServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'Services\$VERSION$\$SERVICE$\Http\Controllers';
+    protected $namespace = 'Services\$VERSION$\$POD$\Http\Controllers';
 
     /**
      * Called before routes are registered.

@@ -38,7 +38,7 @@ class RouteServiceProviderGenerator
     {
         $replaces = [
             'namespace' => 'namespace Pods\\'.$this->version.'\\'.$this->name.'\\Providers',
-            'service'   => $this->name,
+            'pod'       => $this->name,
             'version'   => $this->version,
         ];
         (new Generator(base_path().'/pods/'.$this->version.'/'.$this->name.'/Providers/RouteServiceProvider.php', 'route_service_provider', $replaces))->run();

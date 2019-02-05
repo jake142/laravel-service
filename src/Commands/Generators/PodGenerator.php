@@ -3,10 +3,10 @@
 use Illuminate\Filesystem\Filesystem;
 
 /**
- * Class ServiceGenerator
+ * Class PodGenerator
  * @package Jake142\LaravelPods\Generators
  */
-class ServiceGenerator
+class PodGenerator
 {
     /**
      * The filesystem instance.
@@ -16,7 +16,7 @@ class ServiceGenerator
     protected $filesystem;
 
     /**
-     * The name of the service
+     * The name of the pod
      *
      * @var string
      */
@@ -24,7 +24,7 @@ class ServiceGenerator
     protected $name;
 
     /**
-     * The version of the service
+     * The version of the pod
      *
      * @var string
      */
@@ -39,7 +39,7 @@ class ServiceGenerator
     }
 
     /**
-     * Check if service exist
+     * Check if pod exist
      *
      */
     public function exist()

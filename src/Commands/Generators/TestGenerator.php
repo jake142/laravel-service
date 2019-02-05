@@ -38,7 +38,7 @@ class TestGenerator
     {
         $replaces = [
             'namespace' => 'namespace Pods\\'.$this->version.'\\'.$this->name.'\\Test',
-            'service'   => strtolower($this->name),
+            'pod'       => strtolower($this->name),
             'version'   => strtolower($this->version),
         ];
         (new Generator(base_path().'/pods/'.$this->version.'/'.$this->name.'/Tests/ExampleTest.php', 'test', $replaces))->run();

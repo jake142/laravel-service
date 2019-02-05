@@ -37,7 +37,7 @@ class ComposerGenerator
     public function run()
     {
         $replaces = [
-            'service' => $this->name,
+            'pod'     => $this->name,
             'version' => $this->version,
         ];
         (new Generator(base_path().'/pods/'.$this->version.'/'.$this->name.'/composer.json', 'composer', $replaces))->run();

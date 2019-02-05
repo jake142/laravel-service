@@ -26,10 +26,10 @@ class Composer extends BaseComposer
      * Disable service
      *
      */
-    public function disablePod($service)
+    public function disablePod($name)
     {
         $process = $this->getProcess();
-        $process->setCommandLine(trim($this->findComposer().' remove pods/'.$service));
+        $process->setCommandLine(trim($this->findComposer().' remove pods/'.$name));
         $process->run();
     }
 
@@ -37,10 +37,10 @@ class Composer extends BaseComposer
      * Enable service
      *
      */
-    public function enablePod($service)
+    public function enablePod($name)
     {
         $process = $this->getProcess();
-        $process->setCommandLine(trim($this->findComposer().' require pods/'.$service));
+        $process->setCommandLine(trim($this->findComposer().' require pods/'.$name));
         $process->run();
     }
 
@@ -52,18 +52,18 @@ class Composer extends BaseComposer
     {
 
         $composer = $this->readComposer();
-        $services = [];
+        $pods     = [];
         if (isset($composer['repositories'])) {
 
             foreach ($composer['repositories'] as $repository) {
                 if (isset($repository['url']) && strpos($repository['url'], 'pods/') === 0) {
-                    $serviceName            = str_replace('pods/', '', $repository['url']);
-                    $serviceEnabled         = (isset($composer['require']['pods/'.$serviceName]) ? 'ENABLED' : 'DISABLED');
-                    $services[$serviceName] = $serviceEnabled;
+                    $podName        = str_replace('pods/', '', $repository['url']);
+                    $podEnabled     = (isset($composer['require']['pods/'.$serviceName]) ? 'ENABLED' : 'DISABLED');
+                    $pods[$podName] = $podEnabled;
                 }
             }
         }
-        return $services;
+        return $pods;
     }
 
     /**
@@ -71,10 +71,10 @@ class Composer extends BaseComposer
      *
      * @return boolean
      */
-    public function podEnabled($service)
+    public function podEnabled($name)
     {
         $composer = $this->readComposer();
-        if (isset($composer['require']['pods/'.$service])) {
+        if (isset($composer['require']['pods/'.$name])) {
             return true;
         }
 
@@ -86,11 +86,11 @@ class Composer extends BaseComposer
      *
      * @return boolean
      */
-    public function podExist($service)
+    public function podExist($name)
     {
         $composer = $this->readComposer();
         if (isset($composer['repositories'])) {
-            if (array_search('pods/'.$service, array_column($composer['repositories'], 'url')) !== false) {
+            if (array_search('pods/'.$name, array_column($composer['repositories'], 'url')) !== false) {
                 return true;
             }
 

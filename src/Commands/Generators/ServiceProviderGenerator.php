@@ -38,7 +38,7 @@ class ServiceProviderGenerator
     {
         $replaces = [
             'namespace' => 'namespace Pods\\'.$this->version.'\\'.$this->name.'\\Providers',
-            'service'   => strtolower($this->name),
+            'pod'       => strtolower($this->name),
             'version'   => strtolower($this->version),
         ];
         (new Generator(base_path().'/pods/'.$this->version.'/'.$this->name.'/Providers/ServiceProvider.php', 'service_provider', $replaces))->run();

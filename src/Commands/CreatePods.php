@@ -4,8 +4,8 @@ use Illuminate\Console\Command;
 use Jake142\LaravelPods\Composer;
 use Illuminate\Filesystem\Filesystem;
 use Jake142\LaravelPods\Commands\Generators\JobGenerator;
+use Jake142\LaravelPods\Commands\Generators\PodGenerator;
 use Jake142\LaravelPods\Commands\Generators\TestGenerator;
-use Jake142\LaravelPods\Commands\Generators\ServiceGenerator;
 use Jake142\LaravelPods\Commands\Generators\ComposerGenerator;
 use Jake142\LaravelPods\Commands\Generators\ControllerGenerator;
 use Jake142\LaravelPods\Commands\Generators\ServiceProviderGenerator;
@@ -73,7 +73,7 @@ class CreatePods extends Command
                 $this->createTest($name, $version);
             }
 
-            $this->info('The service '.$name.' is ready to go. Fill it with models, middlewares and loads of love!');
+            $this->info('The Pod '.$name.' is ready to go. Fill it with models, middlewares and loads of love!');
 
             $composer->addPod($version, $name);
 
@@ -113,13 +113,13 @@ class CreatePods extends Command
     }
 
     /**
-     * Create the service
+     * Create the pod
      *
      * @return void
      */
     private function createPod($name, $version)
     {
-        (new ServiceGenerator($name, $version))->exist()->run();
+        (new PodGenerator($name, $version))->exist()->run();
     }
 
     /**
