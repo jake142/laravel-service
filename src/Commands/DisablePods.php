@@ -34,7 +34,6 @@ class DisablePods extends Command
             if (!$composer->podExist($pod)) {
                 throw new \Exception('Pod do not exist');
             }
-
             if (!$composer->podEnabled($pod)) {
                 throw new \Exception('Pod is already disabled');
             }
@@ -42,7 +41,7 @@ class DisablePods extends Command
             $this->info('Disabling '.$pod.'...');
             $composer->disablePod($pod);
             $phpUnitXML->disablePod($pod);
-            $this->info($pid.' is now disabled');
+            $this->info($pod.' is now disabled');
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }

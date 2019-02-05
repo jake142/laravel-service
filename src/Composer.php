@@ -19,7 +19,7 @@ class Composer extends BaseComposer
         }
         $composer['minimum-stability'] = 'dev';
         $composer['prefer-stable']     = true;
-        $this->files->put(base_path().'/composer.json', json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_SLASHES));
+        $this->writeComposer($composer);
     }
 
     /**
@@ -29,7 +29,7 @@ class Composer extends BaseComposer
     public function disablePod($name)
     {
         $process = $this->getProcess();
-        $process->setCommandLine(trim($this->findComposer().' remove pods/'.$name));
+        $process->setCommandLine(trim($this->findComposer().' remove Pods/'.$name));
         $process->run();
     }
 
@@ -40,7 +40,7 @@ class Composer extends BaseComposer
     public function enablePod($name)
     {
         $process = $this->getProcess();
-        $process->setCommandLine(trim($this->findComposer().' require pods/'.$name));
+        $process->setCommandLine(trim($this->findComposer().' require Pods/'.$name));
         $process->run();
     }
 
@@ -58,7 +58,7 @@ class Composer extends BaseComposer
             foreach ($composer['repositories'] as $repository) {
                 if (isset($repository['url']) && strpos($repository['url'], 'pods/') === 0) {
                     $podName        = str_replace('pods/', '', $repository['url']);
-                    $podEnabled     = (isset($composer['require']['pods/'.$serviceName]) ? 'ENABLED' : 'DISABLED');
+                    $podEnabled     = (isset($composer['require']['Pods/'.$podName]) ? 'ENABLED' : 'DISABLED');
                     $pods[$podName] = $podEnabled;
                 }
             }
@@ -74,7 +74,7 @@ class Composer extends BaseComposer
     public function podEnabled($name)
     {
         $composer = $this->readComposer();
-        if (isset($composer['require']['pods/'.$name])) {
+        if (isset($composer['require']['Pods/'.$name])) {
             return true;
         }
 
@@ -116,9 +116,12 @@ class Composer extends BaseComposer
      */
     public function writeComposer($config)
     {
-        return file_put_contents(
+        $this->files->put(
             base_path('composer.json'),
-            json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
+            json_encode(
+                $config,
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+            )
         );
     }
 }
