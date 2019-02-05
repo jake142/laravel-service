@@ -1,4 +1,4 @@
-<?php namespace Jake142\Service\Commands\Generators;
+<?php namespace Jake142\LaravelPods\Commands\Generators;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;

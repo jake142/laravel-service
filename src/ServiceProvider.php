@@ -1,11 +1,12 @@
-<?php namespace Jake142\Service;
+<?php namespace Jake142\LaravelPods;
 
+use Jake142\LaravelPods\Composer;
+use Jake142\LaravelPods\Commands\ListPods;
+use Jake142\LaravelPods\Commands\SetupPods;
+use Jake142\LaravelPods\Commands\CreatePods;
+use Jake142\LaravelPods\Commands\EnablePods;
+use Jake142\LaravelPods\Commands\DisablePods;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
-use Jake142\Service\Commands\MakeService;
-use Jake142\Service\Commands\ListService;
-use Jake142\Service\Commands\EnableService;
-use Jake142\Service\Commands\DisableService;
-use Jake142\Service\Composer;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -18,18 +19,20 @@ class ServiceProvider extends BaseServiceProvider
     {
         //Publish the cfg
         $this->publishes([
-            __DIR__ . '/config/laravel-service.php' => config_path('laravel-service.php')
+            __DIR__.'/config/pods.php' => config_path('pods.php'),
         ]);
         //Setting up commands
         if ($this->app->runningInConsole()) {
             $this->commands([
-                MakeService::class,
-                ListService::class,
-                EnableService::class,
-                DisableService::class
+                SetupPods::class,
+                CreatePods::class,
+                ListPods::class,
+                EnablePods::class,
+                DisablePods::class,
             ]);
         }
     }
+
     /**
      * Register the application services.
      *

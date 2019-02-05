@@ -1,6 +1,6 @@
 {
-  "name": "Services/$VERSION$/$SERVICE$",
-  "description": "Service $VERSION$/$SERVICE$ composer.json",
+  "name": "Pods/$VERSION$/$SERVICE$",
+  "description": "Laravel Pod $VERSION$/$SERVICE$ composer.json",
   "authors": [
     {
       "name": "Marc McKenzie",
@@ -11,13 +11,13 @@
   "require": {},
   "autoload": {
     "psr-4": {
-      "Services\\$VERSION$\\$SERVICE$\\": ""
+      "Pods\\$VERSION$\\$SERVICE$\\": ""
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Services\\$VERSION$\\$SERVICE$\\Providers\\ServiceProvider"
+        "Pods\\$VERSION$\\$SERVICE$\\Providers\\ServiceProvider"
       ]
     }
   }

@@ -1,10 +1,10 @@
-<?php namespace Jake142\Service\Commands\Generators;
+<?php namespace Jake142\LaravelPods\Commands\Generators;
 
-use Jake142\Service\Commands\Generators\Generator;
+use Jake142\LaravelPods\Commands\Generators\Generator;
 
 /**
  * Class ComposerGenerator
- * @package Jake142\Service\Generators
+ * @package Jake142\LaravelPods\Generators
  */
 class ComposerGenerator
 {
@@ -26,7 +26,7 @@ class ComposerGenerator
 
     public function __construct(string $name, string $version)
     {
-        $this->name = $name;
+        $this->name    = $name;
         $this->version = $version;
     }
 
@@ -38,8 +38,8 @@ class ComposerGenerator
     {
         $replaces = [
             'service' => $this->name,
-            'version' => $this->version
+            'version' => $this->version,
         ];
-        (new Generator(base_path().'/Services/'.$this->version.'/'.$this->name.'/composer.json', 'composer', $replaces))->run();
+        (new Generator(base_path().'/pods/'.$this->version.'/'.$this->name.'/composer.json', 'composer', $replaces))->run();
     }
 }
