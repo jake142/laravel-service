@@ -69,8 +69,8 @@ class SetupPods extends Command
                 // Update autoload paths
                 foreach ($composerJson['autoload']['psr-4'] as $key => $value) {
                     if ('App\\' === $key) {
-                        $composerJson['autoload']['psr-4'][$key]     = 'common/';
-                        $composerJson['autoload']['psr-4']['Core\\'] = 'common/';
+                        $composerJson['autoload']['psr-4'][$key] = 'common/';
+                        // $composerJson['autoload']['psr-4']['Core\\'] = 'common/';
                     }
                 }
                 // foreach ($composerJson['autoload']['classmap'] as $key => $value) {

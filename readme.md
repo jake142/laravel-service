@@ -68,7 +68,7 @@ The pod is now created (added as a repository to your composer.json file), but n
 
 To enable a pod run:
 
-> php artisan pod:enable $version/$pod name (eg. V1/SamplePod)
+> php artisan pods:enable $version/$pod name (eg. V1/SamplePod)
 
 This will enable the pod which means:
 

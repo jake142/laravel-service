@@ -50,15 +50,18 @@ class CreatePods extends Command
             //Create mandatory stuff
             $this->createComposer($name, $version);
             $this->createServiceProvider($name, $version);
-            $this->createRouteServiceProvider($name, $version);
+
+            $createRoutes = $this->choice('Would you like to create default web and api routes? (recommended)', ['Yes', 'No'], 0);
+            if ('Yes' == $createRoutes) {
+                $this->createRouteServiceProvider($name, $version);
+                $this->emptyRoutes($name, $version);
+            }
 
             //Create optional stuff
             $createController = $this->choice('Would you like to create a controller? (recommended)', ['Yes', 'No'], 0);
 
             if ('Yes' == $createController) {
                 $this->createController($name, $version);
-            } else {
-                $this->emptyRoutes($name, $version);
             }
 
             $createJob = $this->choice('Would you like to create a Job? (recommended)', ['Yes', 'No'], 0);
@@ -159,7 +162,7 @@ class CreatePods extends Command
      */
     private function emptyRoutes($name, $version)
     {
-        $this->filesystem->put(base_path().'/pods/'.$version.'/'.$name.'/api_routes.stub', '//Your routes goes here');
-        $this->filesystem->put(base_path().'/pods/'.$version.'/'.$name.'/web_routes.stub', '//Your routes goes here');
+        $this->filesystem->put(base_path().'/pods/'.$version.'/'.$name.'/Routes/api.php', '<?php //Your routes goes here');
+        $this->filesystem->put(base_path().'/pods/'.$version.'/'.$name.'/Routes/web.php', '<?php //Your routes goes here');
     }
 }

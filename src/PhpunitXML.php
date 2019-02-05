@@ -32,7 +32,7 @@ class PhpunitXML
             $testsuiteNode->setAttribute('name', $pod);
             $directoryNode = $domPhpunitXML->createElement('directory');
             $directoryNode->setAttribute('suffix', 'Test.php');
-            $directoryNodeData = $domPhpunitXML->createTextNode('./pod/'.$pod.'/tests');
+            $directoryNodeData = $domPhpunitXML->createTextNode('./pod/'.$pod.'/Tests');
             $directoryNode->appendChild($directoryNodeData);
             $testsuiteNode->appendChild($directoryNode);
             $testsuitesNode->appendChild($testsuiteNode);
