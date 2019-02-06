@@ -25,7 +25,7 @@ class SetupPods extends Command
      *
      * @var string
      */
-    protected $signature = 'pods:setup {--scaffold}';
+    protected $signature = 'pods:setup {--scaffold} {--migrate-services}';
 
     public function __construct()
     {
@@ -47,42 +47,96 @@ class SetupPods extends Command
             // Create the pods directory if it doesn't exist
             $this->mkBaseDir('pods');
 
-            // Shall I scaffold the whole project?
-            if ($this->option('scaffold') && file_exists(base_path('app'))) {
-                // Create the "common" directory
+            // Bail service migration early if not applicable
+            if ($this->option('migrate-services') && !file_exists(base_path('Services'))) {
+                return $this->error('This migration is only applicable to migrate laravel-services v0.0.2 projects.');
+            }
+
+            // The "--scaffold" flag will arrange an vanilla laravel project into our
+            // optionated structure. The "--migrate-services" flag will migrate already
+            // created "Services" (in v0.0.2) into this new structure
+            if ($this->option('scaffold') || $this->option('migrate-services')) {
+                // Bail if things doesn't look right, eg: things already exists
+                if (file_exists(base_path('common')) || file_exists(base_path('pods'))) {
+                    return $this->error('Setup already done!');
+                }
+                // We need to keep track of this not to overwrite anything
+                $currentAppDirContainsTests   = file_exists(base_path('app/tests'));
+                $currentAppDirContainsRoutes  = file_exists(base_path('app/routes'));
+                $currentAppDirContainsViews   = file_exists(base_path('app/views'));
+                $currentBaseDirContainsTests  = file_exists(base_path('tests'));
+                $currentBaseDirContainsRoutes = file_exists(base_path('routes'));
+                // Regardless of current setup we'll want an "common" folder
                 $this->mkBaseDir('common');
-                // Move the contents of app to "common"
-                $this->moveDirContentsToCommon('app');
-                // Move theese directories to "common"
-                // $this->moveDirToCommon('resources');
-                $this->moveDirToCommon('routes', 'Routes');
-                $this->moveDirToCommon('tests', 'Tests');
-                // Change paths to things we've just moved
-                $this->replaceStringInFile('phpunit.xml', './tests/', './common/Tests/');
-                $this->replaceStringInFile('phpunit.xml', './app', './common');
+                // If there's an "app" folder present we'll move its contents to "common"
+                if (file_exists(base_path('app'))) {
+                    // Remember if there's any tests in this folder
+                    $this->moveDirContentsToCommon('app');
+                    // If there was tests in this folder rename it proper
+                    if ($currentAppDirContainsTests) {
+                        $this->moveDirToCommon('common/tests', 'Tests');
+                    } else {
+                        // Else we'll move base dir tests there
+                        $this->moveDirToCommon('tests', 'Tests');
+                    }
+                    // Update the testpath
+                    if ($currentAppDirContainsTests || $currentBaseDirContainsTests) {
+                        $this->replaceStringInFile('phpunit.xml', './tests/', './common/Tests/');
+                        $this->replaceStringInFile('phpunit.xml', './app', './common');
+                    }
+                    // If there was routes in this folder rename it proper
+                    if ($currentAppDirContainsRoutes) {
+                        $this->moveDirToCommon('common/routes', 'Routes');
+                    } else {
+                        $this->moveDirToCommon('routes', 'Routes');
+                    }
+                    // If there was view in this folder rename it proper
+                    if ($currentAppDirContainsViews) {
+                        $this->moveDirToCommon('common/views', 'Views');
+                    }
+                    // If there's an Route service provider defined update it's contents
+                    if (file_exists(base_path('common/Providers/RouteServiceProvider.php'))) {
+                        // Cover both "/app/routes" and "/routes" cases
+                        $this->replaceStringInFile('common/Providers/RouteServiceProvider.php', 'app/routes/web.php', 'common/Routes/web.php');
+                        $this->replaceStringInFile('common/Providers/RouteServiceProvider.php', 'app/routes/api.php', 'common/Routes/api.php');
+                        $this->replaceStringInFile('common/Providers/RouteServiceProvider.php', 'routes/web.php', 'common/Routes/web.php');
+                        $this->replaceStringInFile('common/Providers/RouteServiceProvider.php', 'routes/api.php', 'common/Routes/api.php');
+                    }
+                }
+
+                // Just make sure we dont overwrite tests
+                if ($currentAppDirContainsTests && $currentBaseDirContainsTests) {
+                    $this->warning('==> Warning!');
+                    $this->warning('    Tests found in both "tests" and "app/tests" (now "common/Tests")!');
+                    $this->warning('    * "tests" will not be autoloaded by composer anymore,');
+                    $this->warning('       theese must be merged to "common/Tests".');
+                }
+                // Just make sure we dont overwrite routes
+                if ($currentAppDirContainsRoutes && $currentBaseDirContainsRoutes) {
+                    $this->warning('==> Warning!');
+                    $this->warning('    Routes found in both "routes" and "app/routes" (now "common/Routes")!');
+                    $this->warning('    * "routes" will not be autoloaded by composer anymore,');
+                    $this->warning('       theese must be merged to "common/Routes".');
+                }
+                // Replace Console kernel path
                 $this->replaceStringInFile('common/Console/Kernel.php', 'routes/console.php', 'common/Routes/console.php');
-                $this->replaceStringInFile('common/Providers/RouteServiceProvider.php', 'routes/web.php', 'common/Routes/web.php');
-                $this->replaceStringInFile('common/Providers/RouteServiceProvider.php', 'routes/api.php', 'common/Routes/api.php');
-                $this->replaceStringInFile('common/Providers/BroadcastServiceProvider.php', 'routes/channels.php', 'common/Routes/channels.php');
-                // Load current composer configuration
+
+                // Load up composer
                 $composerJson = $composer->readComposer();
-                // Update autoload paths
+                // Change the path of what was "app" into "common"
                 foreach ($composerJson['autoload']['psr-4'] as $key => $value) {
                     if ('App\\' === $key) {
                         $composerJson['autoload']['psr-4'][$key] = 'common/';
                         // $composerJson['autoload']['psr-4']['Core\\'] = 'common/';
                     }
                 }
-                // foreach ($composerJson['autoload']['classmap'] as $key => $value) {
-                //     if (strpos($value, 'database') !== false) {
-                //         $composerJson['autoload']['classmap'][$key] = 'common/'.$value;
-                //     }
-                // }
+                // Replace the autoload dev paths
                 foreach ($composerJson['autoload-dev']['psr-4'] as $key => $value) {
                     if ('tests/' === $value) {
                         $composerJson['autoload-dev']['psr-4'][$key] = 'common/Tests/';
                     }
                 }
+                // And write it back
                 $composer->writeComposer($composerJson);
             }
 
