@@ -1,10 +1,10 @@
-<?php namespace Jake142\Service\Commands\Generators;
+<?php namespace Jake142\LaravelPods\Commands\Generators;
 
-use Jake142\Service\Commands\Generators\Generator;
+use Jake142\LaravelPods\Commands\Generators\Generator;
 
 /**
  * Class TestGenerator
- * @package Jake142\Service\Generators
+ * @package Jake142\LaravelPods\Generators
  */
 class TestGenerator
 {
@@ -26,7 +26,7 @@ class TestGenerator
 
     public function __construct(string $name, string $version)
     {
-        $this->name = $name;
+        $this->name    = $name;
         $this->version = $version;
     }
 
@@ -37,10 +37,10 @@ class TestGenerator
     public function run()
     {
         $replaces = [
-            'namespace' => 'namespace Services\\'.$this->version.'\\'.$this->name.'\\Test',
-            'service' => strtolower($this->name),
-            'version' => strtolower($this->version)
+            'namespace' => 'namespace Pods\\'.$this->version.'\\'.$this->name.'\\Test',
+            'pod'       => strtolower($this->name),
+            'version'   => strtolower($this->version),
         ];
-        (new Generator(base_path().'/Services/'.$this->version.'/'.$this->name.'/tests/ExampleTest.php', 'test', $replaces))->run();
+        (new Generator(base_path().'/pods/'.$this->version.'/'.$this->name.'/Tests/ExampleTest.php', 'test', $replaces))->run();
     }
 }

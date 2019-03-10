@@ -2,6 +2,8 @@
 
 ## Release note
 
+Version 0.3.0 Renamed to "Laravel pods", suggested a new scaffold model, common + pods 
+
 Version 0.2.1 enabled automatic update of service configs. More info below.
 
 Version 0.2.0 includes generic jobs and queues. This is needed so one service can push data on to a queue without knowing about the code in another service job.
@@ -10,7 +12,7 @@ Version 0.1.X is a complete rewrite of the package. Version 0.1.X now creates ea
 
 PLEASE NOTE
 
-laravel-service will add:
+laravel-pods will add:
 
 ```json
 "minimum-stability": "dev",
@@ -19,61 +21,74 @@ laravel-service will add:
 
 to your composer.json file.
 
-## Laravel Service
 
-A package to divide Laravel into smaller services. Then main goal of this package is:
+## Laravel Pods
 
-1. Readable, the code is split into services
-2. Scalable, run services as needed
+A package to divide Laravel projects into smaller pods. Then main goal of this package is:
+
+1. Readable, the code is split into pods
+2. Scalable, run pods as needed
 3. Faster development, split work between developers
 
 #### Installation
 
 Simply run:
 
-> composer require jake142/laravel-service
+> composer require lindstream/laravel-pods
+
+#### Quick Setup scaffold
+
+> php artisan pods:setup --scaffold
+
+Get quickly up and running by using the --scaffold param; This will:
+* Rename folder "app" to "common"
+* Move folder "routes" into "common/Routes"
+* Move folder "tests" into "common/Tests"
+* Reconfigure paths in moved "common/Provider" files
+
+
 
 #### Usage
 
 Start by running
 
-> php artisan service:make
+> php artisan pods:create
 
 This will start a setup wizard where you define:
 
-1. The name of the service
-2. The version of the service (eg. V1)
+1. The name of the pod
+2. The version of the pod (eg. V1)
 3. If you want a sample controller (recommended)
 4. If you want a sample job (recommended)
 4. If you want a sample test (recommended)
 
-The service is now created (added as a repository to your composer.json file), but not enabled.
+The pod is now created (added as a repository to your composer.json file), but not enabled.
 
-#### Enable a service
+#### Enable a pod
 
-To enable a service run:
+To enable a pod run:
 
-> php artisan service:enable $version/$service name (eg. V1/SampleService)
+> php artisan pods:enable $version/$pod name (eg. V1/SamplePod)
 
-This will enable the service which means:
+This will enable the pod which means:
 
-1. Composer runs require on your service
+1. Composer runs require on your pod
 2. The tests will be added to the phpunit.xml and therefore able to run with the phpunit command
 
-#### Disable a service
+#### Disable a pod
 
-To disable a service run:
+To disable a pod run:
 
-> php artisan service:disable $version/$service name (eg. V1/SampleService)
+> php artisan pods:disable $version/$pod name (eg. V1/SamplePod)
 
-This will disable the service which means:
+This will disable the pod which means:
 
-1. Composer runs remove on your service
+1. Composer runs remove on your pod
 2. The tests will be removed from the phpunit.xml
 
-#### List services and their status
+#### List pods and their status
 
-> php artisan service:list
+> php artisan pods:list
 
 #### Generic Queues and Jobs
 
@@ -91,7 +106,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-use Jake142\Service\Queue\Jobs\Generic as GenericJob;
+use Jake142\LaravelPods\Queue\Jobs\Generic as GenericJob;
 
 /**
  * An example job
@@ -108,7 +123,7 @@ class ExampleJob implements ShouldQueue
 ```
 #### Config
 
-You can either use vendor:publish to publish the config files for each service or you can publish the laravel-service config file which will get updated when you add new configs to a service. If you use the laravel-service config file you access the config values as following:
+You can either use vendor:publish to publish the config files for each pod or you can publish the laravel-pods config file which will get updated when you add new configs to a pod. If you use the laravel-pods config file you access the config values as following:
 
 ```php
 config('laravel-service.<version>.<service>.<config_file>.<value>');

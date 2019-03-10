@@ -12,7 +12,7 @@ class ExampleTest extends TestCase
      */
     public function testWebRoute()
     {
-        $response = $this->get('/$VERSION$/$SERVICE$');
+        $response = $this->get('/$VERSION$/$POD$');
 
         $response->assertStatus(200);
     }

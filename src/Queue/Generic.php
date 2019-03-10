@@ -1,4 +1,4 @@
-<?php namespace Jake142\Service\Queue;
+<?php namespace Jake142\LaravelPods\Queue;
 
 use Queue;
 

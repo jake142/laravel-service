@@ -10,7 +10,7 @@ class RouteServiceProvider extends BaseRouteServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'Services\$VERSION$\$SERVICE$\Http\Controllers';
+    protected $namespace = 'Services\$VERSION$\$POD$\Http\Controllers';
 
     /**
      * Called before routes are registered.
@@ -47,7 +47,7 @@ class RouteServiceProvider extends BaseRouteServiceProvider
     {
         Route::middleware('web')
             ->namespace($this->namespace)
-            ->group(__DIR__ . '/../routes/web.php');
+            ->group(__DIR__ . '/../Routes/web.php');
     }
 
     /**
@@ -62,6 +62,6 @@ class RouteServiceProvider extends BaseRouteServiceProvider
         Route::prefix('api')
             ->middleware('api')
             ->namespace($this->namespace)
-            ->group(__DIR__ . '/../routes/api.php');
+            ->group(__DIR__ . '/../Routes/api.php');
     }
 }

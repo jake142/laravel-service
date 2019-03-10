@@ -1,25 +1,29 @@
 {
-    "name": "jake142/laravel-service",
-    "description": "A package to split a laravel project into smaller services",
+    "name": "jake142/laravel-pods",
+    "description": "A package to split a laravel project into smaller services, a.k.a. Pods",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "Marc McKenzie",
             "email": "imjake142@gmail.com"
+        },
+        {
+            "name": "Robin Lindström",
+            "email": "robin@kwick.io"
         }
     ],
     "minimum-stability": "dev",
     "require": {},
     "autoload": {
         "psr-4": {
-            "Jake142\\Service\\": "src"
+            "Jake142\\LaravelPods\\": "src"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Jake142\\Service\\ServiceProvider"
+                "Jake142\\LaravelPods\\ServiceProvider"
             ]
         }
     }

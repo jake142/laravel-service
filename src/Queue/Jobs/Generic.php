@@ -1,4 +1,4 @@
-<?php namespace Jake142\Service\Queue\Jobs;
+<?php namespace Jake142\LaravelPods\Queue\Jobs;
 
 /**
  * An Generic job
