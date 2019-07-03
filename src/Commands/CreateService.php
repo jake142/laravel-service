@@ -24,7 +24,7 @@ class CreateService extends Command
      *
      * @var string
      */
-    protected $name = 'service:create';
+    protected $name = 'laravel-service:create';
 
     /**
      * The description of command.
