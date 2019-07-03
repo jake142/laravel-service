@@ -2,6 +2,12 @@
 
 ## Release note
 
+Version 0.2.2 Due to Composer 2.x more strict naming rules this package has new naming of the services. I have created an artisan upgrade command to make the changes for you. The command will disable all your services and you have to manually enable them when you have run the command.
+
+> php artisan laravel-service:update-package
+
+I have also updated all commands with the prefix laravel-service (instead of service as before)
+
 Version 0.2.1 enabled automatic update of service configs. More info below.
 
 Version 0.2.0 includes generic jobs and queues. This is needed so one service can push data on to a queue without knowing about the code in another service job.
@@ -53,7 +59,7 @@ The service is now created (added as a repository to your composer.json file), b
 
 To enable a service run:
 
-> php artisan service:enable $version/$service name (eg. V1/SampleService)
+> php artisan service:enable laravel-service/$version-$service (eg. laravel-service/v1-sampleservice)
 
 This will enable the service which means:
 
@@ -64,7 +70,7 @@ This will enable the service which means:
 
 To disable a service run:
 
-> php artisan service:disable $version/$service name (eg. V1/SampleService)
+> php artisan service:disable laravel-service/$version-$service (eg. laravel-service/v1-sampleservice)
 
 This will disable the service which means:
 

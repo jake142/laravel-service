@@ -1,5 +1,5 @@
 {
-  "name": "Services/$VERSION$/$SERVICE$",
+  "name": "laravel-service/$VERSION_LOWER$-$SERVICE_LOWER$",
   "description": "Service $VERSION$/$SERVICE$ composer.json",
   "authors": [
     {

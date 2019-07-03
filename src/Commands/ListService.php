@@ -10,7 +10,7 @@ class ListService extends Command
      *
      * @var string
      */
-    protected $name = 'service:list';
+    protected $name = 'laravel-service:list';
 
     /**
      * The description of command.

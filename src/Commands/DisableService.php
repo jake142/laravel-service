@@ -11,7 +11,7 @@ class DisableService extends Command
      *
      * @var string
      */
-    protected $signature = 'service:disable {service}';
+    protected $signature = 'laravel-service:disable {service}';
 
     /**
      * The description of command.

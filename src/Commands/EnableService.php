@@ -11,7 +11,7 @@ class EnableService extends Command
      *
      * @var string
      */
-    protected $signature = 'service:enable {service}';
+    protected $signature = 'laravel-service:enable {service}';
 
     /**
      * The description of command.

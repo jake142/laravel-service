@@ -1,6 +1,7 @@
 <?php namespace Jake142\Service;
 
 use Illuminate\Support\Composer as BaseComposer;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class Composer extends BaseComposer
 {
@@ -19,16 +20,11 @@ class Composer extends BaseComposer
      */
     public function addService($version, $name)
     {
-
-        $composer = $this->readComposer();
-        if(isset($composer['repositories'])) {
-            $composer['repositories'][] = ['type'=>'path','url'=>'Services/'.$version.'/'.$name,'options'=>['symlink'=>true]];
-        } else {
-            $composer['repositories'][] = ['type'=>'path','url'=>'Services/'.$version.'/'.$name,'options'=>['symlink'=>true]];
-        }
-        $composer['minimum-stability'] = 'dev';
-        $composer['prefer-stable'] = true;
-        $this->files->put(base_path().'/composer.json', json_encode($composer,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_SLASHES));
+        $composerData = $this->readComposer();
+        $composerData['repositories'][] = ['name'=>'laravel-service/'.strtolower($version.'-'.$name), 'type'=>'path','url'=>'Services/'.$version.'/'.$name,'options'=>['symlink'=>true]];
+        $composerData['minimum-stability'] = 'dev';
+        $composerData['prefer-stable'] = true;
+        $this->writeToDisk($composerData);
     }
     /**
      * List services
@@ -36,17 +32,15 @@ class Composer extends BaseComposer
      */
     public function listServices()
     {
-
-        $composer = $this->readComposer();
+        $composerData = $this->readComposer();
         $services = [];
-        if(isset($composer['repositories'])) {
+        if(isset($composerData['repositories'])) {
 
-            foreach($composer['repositories'] as $repository)
+            foreach($composerData['repositories'] as $repository)
             {
-                if(isset($repository['url']) && strpos($repository['url'], 'Services/') === 0) {
-                     $serviceName = str_replace('Services/','',$repository['url']);
-                     $serviceEnabled = (isset($composer['require']['Services/'.$serviceName]) ? 'ENABLED':'DISABLED');
-                     $services[$serviceName] = $serviceEnabled;
+                if(isset($repository['name']) && strpos($repository['url'], 'Services/') === 0) {
+                     $serviceEnabled = $this->serviceEnabled($repository['name']) ? 'ENABLED':'DISABLED';
+                     $services[$repository['name']] = $serviceEnabled;
                 }
             }
         }
@@ -59,8 +53,11 @@ class Composer extends BaseComposer
     public function enableService($service)
     {
         $process = $this->getProcess();
-        $process->setCommandLine(trim($this->findComposer().' require Services/'.$service));
+        $process->setCommandLine(trim($this->findComposer().' require '.$service));
         $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
     }
     /**
      * Disable service
@@ -69,8 +66,11 @@ class Composer extends BaseComposer
     public function disableService($service)
     {
         $process = $this->getProcess();
-        $process->setCommandLine(trim($this->findComposer().' remove Services/'.$service));
+        $process->setCommandLine(trim($this->findComposer().' remove '.$service));
         $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
     }
     /**
      * Service exist
@@ -79,25 +79,34 @@ class Composer extends BaseComposer
      */
     public function serviceExist($service)
     {
-        $composer = $this->readComposer();
-        if(isset($composer['repositories'])) {
-            if(array_search('Services/'.$service, array_column($composer['repositories'], 'url')) !== False)
+        $composerData = $this->readComposer();
+        if(isset($composerData['repositories'])) {
+            if(array_search($service, array_column($composerData['repositories'], 'name')) !== False)
                 return true;
         }
         return false;
         
     }
     /**
-     * Service is enabled
+     * Status of service
      *
      * @return boolean
      */
     public function serviceEnabled($service)
     {
-        $composer = $this->readComposer();
-        if(isset($composer['require']['Services/'.$service]))
+        $composerData = $this->readComposer();
+        if(isset($composerData['require'][$service]))
             return true;
 
         return false;
+    }
+    /**
+     * Write composer file
+     *
+     * @return boolean
+     */
+    public function writeToDisk(array $composerData)
+    {
+        $this->files->put(base_path().'/composer.json', json_encode($composerData,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_SLASHES));
     }
 }

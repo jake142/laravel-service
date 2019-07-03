@@ -37,6 +37,8 @@ class ComposerGenerator
     public function run()
     {
         $replaces = [
+            'service_lower' => strtolower($this->name),
+            'version_lower' => strtolower($this->version),
             'service' => $this->name,
             'version' => $this->version
         ];

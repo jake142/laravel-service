@@ -24,7 +24,7 @@ class MakeService extends Command
      *
      * @var string
      */
-    protected $name = 'service:make';
+    protected $name = 'laravel-service:make';
 
     /**
      * The description of command.
