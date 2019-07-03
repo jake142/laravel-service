@@ -29,7 +29,7 @@ class UpdatePackage extends Command
         try
         {
             //Create optional stuff
-            $createController = $this->choice('The upgrade to version 0.2.2 will disable all services. Should we proceed?', ['Yes','No'], 0);
+            $createController = $this->choice('The upgrade to version ^0.2.2 will disable all services. Should we proceed?', ['Yes','No'], 0);
 
             if($createController=='Yes') {
                 $this->version022($composer);
@@ -47,7 +47,7 @@ class UpdatePackage extends Command
     private function version022(Composer $composer) {
         try {
 
-            $this->info('Begins upgrade to version 0.2.2');
+            $this->info('Begins upgrade to version ^0.2.2');
             $composerFile = $composer->readComposer();
             $services = [];
             if(isset($composerFile['repositories'])) {
@@ -75,7 +75,7 @@ class UpdatePackage extends Command
                 $composer->writeToDisk($composerFile);
                 $this->info('Has written new composer.json files with the new names');
             }
-            $this->info('Upgrade to version 0.2.2 complete. You can now enable your services again!');
+            $this->info('Upgrade to version ^0.2.2 complete. You can now enable your services again!');
         }
         catch(\Exception $e)
         {
