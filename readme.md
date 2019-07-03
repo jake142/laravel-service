@@ -2,6 +2,8 @@
 
 ## Release note
 
+Version 0.2.3 service:make command renamed to laravel-service:make.
+
 Version 0.2.2 Due to Composer 2.x more strict naming rules this package has new naming of the services. I have created an artisan upgrade command to make the changes for you. The command will disable all your services and you have to manually enable them when you have run the command.
 
 > php artisan laravel-service:update-package
