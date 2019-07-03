@@ -2,6 +2,7 @@
 
 use Illuminate\Console\Command;
 use Jake142\Service\Composer;
+use Jake142\Service\PhpunitXML;
 
 class UpdatePackage extends Command
 {
@@ -25,14 +26,14 @@ class UpdatePackage extends Command
      * @see fire()
      * @return void
      */
-    public function handle(Composer $composer){
+    public function handle(Composer $composer, PhpunitXML $phpUnitXML){
         try
         {
             //Create optional stuff
             $createController = $this->choice('The upgrade to version ^0.2.2 will disable all services. Should we proceed?', ['Yes','No'], 0);
 
             if($createController=='Yes') {
-                $this->version022($composer);
+                $this->version022($composer, $phpUnitXML);
             } else {
                 $this->info('Ok, no upgrade done');
             }
@@ -44,7 +45,7 @@ class UpdatePackage extends Command
         }
  
     }
-    private function version022(Composer $composer) {
+    private function version022(Composer $composer, PhpunitXML $phpUnitXML) {
         try {
 
             $this->info('Begins upgrade to version ^0.2.2');
@@ -64,6 +65,8 @@ class UpdatePackage extends Command
                         if(isset($composerFile['require'][$repository['url']])) {
                             $this->info('Disabling '.$repository['url']. '. You need to enable it using '.$serviceName); 
                             $composer->disableService($repository['url']);
+                            $phpUnitXML->disableService(str_replace('Services/','',$repository['url']));
+                            unset($composerFile['require'][$repository['url']]);
                         }
 
                         $serviceComposerFile = json_decode(file_get_contents(base_path($repository['url'].'/composer.json')), true);

@@ -101,6 +101,21 @@ class Composer extends BaseComposer
         return false;
     }
     /**
+     * Get URL of a service
+     *
+     * @return string
+     */
+    public function getUrl($service)
+    {
+        $composerData = $this->readComposer();
+        foreach($composerData['repositories'] as $key => $repository)
+        {
+            if(isset($repository['name']) && isset($repository['url']) && $repository['name'] == $service)
+                return $repository['url'];
+        }
+        return null;
+    }
+    /**
      * Write composer file
      *
      * @return boolean

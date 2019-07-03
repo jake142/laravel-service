@@ -36,7 +36,8 @@ class EnableService extends Command
                 throw new \Exception('Service is already enabled');
             $this->info('Enabling '.$service.'...');
             $composer->enableService($service);
-            $phpUnitXML->enableService($service);
+            $url = $composer->getUrl($service);
+            $phpUnitXML->enableService($service, $url);
             $this->info($service.' is now enabled and ready to be used');
         }
         catch(\Exception $e)

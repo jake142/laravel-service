@@ -28,7 +28,7 @@ class PhpunitXML
      * Add a service
      *
      */
-    public function enableService($service)
+    public function enableService($service, $url)
     {
 
         $domPhpunitXML = $this->readPhpunitXml();
@@ -39,7 +39,7 @@ class PhpunitXML
             $testsuiteNode->setAttribute ( 'name' , $service );
             $directoryNode = $domPhpunitXML->createElement ('directory');
             $directoryNode->setAttribute ( 'suffix' , 'Test.php');
-            $directoryNodeData = $domPhpunitXML->createTextNode('./Services/'.$service.'/tests');
+            $directoryNodeData = $domPhpunitXML->createTextNode('./'.$url.'/tests');
             $directoryNode->appendChild($directoryNodeData);
             $testsuiteNode->appendChild($directoryNode);
             $testsuitesNode->appendChild($testsuiteNode);
