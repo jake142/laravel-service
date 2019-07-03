@@ -43,7 +43,7 @@ Simply run:
 
 Start by running
 
-> php artisan service:make
+> php artisan laravel-service:make
 
 This will start a setup wizard where you define:
 
