@@ -6,7 +6,11 @@ Version 0.2.5 Fixed broken update package command. Now you should be able to run
 
 > php artisan laravel-service:update-package
 
-If you have been using version 0.2.2 -> 0.2.4 you will have to fix your composer and phpunit file manually. Sorry!
+If you have been using version 0.2.2 -> 0.2.4 you will have to fix your composer files and phpunit file manually. Sorry!
+
+```
+Note: If you have dependencies between your services (eg. common, core services etc) you should manually disable all service before running the laravel-service:update-package command.
+```
 
 Version 0.2.3 service:make command renamed to laravel-service:make.
 
