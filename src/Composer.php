@@ -53,7 +53,7 @@ class Composer extends BaseComposer
     public function enableService($service)
     {
         $process = $this->getProcess();
-        $process->setCommandLine(trim($this->findComposer().' require '.$service));
+        $process->setCommandLine(trim($this->findComposer().' require '.$service.' dev-master'));
         $process->run();
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
