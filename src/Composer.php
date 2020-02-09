@@ -53,7 +53,7 @@ class Composer extends BaseComposer
      */
     public function enableService($service)
     {
-        $command = array_merge([$this->findComposer()], ['require'], [$service, 'dev-master']);
+        $command = array_merge((is_array($this->findComposer()) ? $this->findComposer():[$this->findComposer()]), ['require'], [$service, 'dev-master']);
         $process = $this->createProcess($command);
         $process->run();
         if (!$process->isSuccessful()) {
@@ -66,7 +66,7 @@ class Composer extends BaseComposer
      */
     public function disableService($service)
     {
-        $command = array_merge([$this->findComposer()], ['remove'], [$service]);
+        $command = array_merge((is_array($this->findComposer()) ? $this->findComposer():[$this->findComposer()]), ['remove'], [$service]);
         $process = $this->createProcess($command);
         $process->run();
         if (!$process->isSuccessful()) {
