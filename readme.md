@@ -2,6 +2,8 @@
 
 ## Release note
 
+Version 0.2.7 Override the deprecated function getProcess of the Composer class to support laravel 5.8 and above.
+
 Version 0.2.6 the dev-master param was added to the composer require command run when you enable a service.
 
 Version 0.2.5 Fixed broken update package command. Now you should be able to run

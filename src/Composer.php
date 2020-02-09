@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Composer as BaseComposer;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class Composer extends BaseComposer
 {
@@ -52,8 +53,8 @@ class Composer extends BaseComposer
      */
     public function enableService($service)
     {
-        $process = $this->getProcess();
-        $process->setCommandLine(trim($this->findComposer().' require '.$service.' dev-master'));
+        $command = array_merge([$this->findComposer()], ['require'], [$service, 'dev-master']);
+        $process = $this->createProcess($command);
         $process->run();
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
@@ -65,8 +66,8 @@ class Composer extends BaseComposer
      */
     public function disableService($service)
     {
-        $process = $this->getProcess();
-        $process->setCommandLine(trim($this->findComposer().' remove '.$service));
+        $command = array_merge([$this->findComposer()], ['remove'], [$service]);
+        $process = $this->createProcess($command);
         $process->run();
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
@@ -123,5 +124,16 @@ class Composer extends BaseComposer
     public function writeToDisk(array $composerData)
     {
         $this->files->put(base_path().'/composer.json', json_encode($composerData,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_SLASHES));
+    }
+    /**
+     * Override the deprecated method of get Process
+     * Get a new Symfony process instance.
+     *
+     * @param  array  $command
+     * @return \Symfony\Component\Process\Process
+     */
+    protected function createProcess(array $command)
+    {
+        return (new Process($command, $this->workingPath))->setTimeout(null);
     }
 }
