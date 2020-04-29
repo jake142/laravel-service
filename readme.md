@@ -2,6 +2,8 @@
 
 ## Release note
 
+Version 0.2.9 Fixed bug in GenericQueue where job was not deleted from queue when processed.
+
 Version 0.2.8 Fixed the bug in 0.2.7 whereas $this->findComposer() is an array in laravel 5.8 and above and a string in laravel 5.7 and below.
 
 Version 0.2.7 Override the deprecated function getProcess of the Composer class to support laravel 5.8 and above.

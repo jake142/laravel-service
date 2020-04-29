@@ -19,5 +19,6 @@ trait Generic
     {
         $this->data = json_decode($data->getRawBody(),true)['data'];
         $this->handle();
+        $data->delete();
     }
 }
