@@ -2,6 +2,8 @@
 
 ## Release note
 
+Version 3.0.0 Now with open api 3.0! Read more below!
+
 Version 0.2.9 Fixed bug in GenericQueue where job was not deleted from queue when processed.
 
 Version 0.2.8 Fixed the bug in 0.2.7 whereas $this->findComposer() is an array in laravel 5.8 and above and a string in laravel 5.7 and below.
@@ -79,7 +81,7 @@ The service is now created (added as a repository to your composer.json file), b
 
 To enable a service run:
 
-> php artisan service:enable laravel-service/$version-$service (eg. laravel-service/v1-sampleservice)
+> php artisan laravel-service:enable laravel-service/$version-$service (eg. laravel-service/v1-sampleservice)
 
 This will enable the service which means:
 
@@ -90,7 +92,7 @@ This will enable the service which means:
 
 To disable a service run:
 
-> php artisan service:disable laravel-service/$version-$service (eg. laravel-service/v1-sampleservice)
+> php artisan laravel-service:disable laravel-service/$version-$service (eg. laravel-service/v1-sampleservice)
 
 This will disable the service which means:
 
@@ -99,7 +101,7 @@ This will disable the service which means:
 
 #### List services and their status
 
-> php artisan service:list
+> php artisan laravel-service:list
 
 #### Generic Queues and Jobs
 
@@ -139,3 +141,11 @@ You can either use vendor:publish to publish the config files for each service o
 ```php
 config('laravel-service.<version>.<service>.<config_file>.<value>');
 ```
+
+#### Generating OpenAPI docs
+
+> php artisan laravel-service:generate-docs
+
+The docs will be generated in the storage folder: storage/app/laravel-service/v1-sampleservice/docs/swagger.json.
+
+Credits to [swagger-php](http://zircote.github.io/swagger-php/)

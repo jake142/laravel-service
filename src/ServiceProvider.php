@@ -6,6 +6,7 @@ use Jake142\Service\Commands\ListService;
 use Jake142\Service\Commands\EnableService;
 use Jake142\Service\Commands\DisableService;
 use Jake142\Service\Commands\UpdatePackage;
+use Jake142\Service\Commands\GenerateServiceDocumentation;
 use Jake142\Service\Composer;
 
 class ServiceProvider extends BaseServiceProvider
@@ -28,7 +29,8 @@ class ServiceProvider extends BaseServiceProvider
                 ListService::class,
                 EnableService::class,
                 DisableService::class,
-                UpdatePackage::class
+                UpdatePackage::class,
+                GenerateServiceDocumentation::class
             ]);
         }
     }

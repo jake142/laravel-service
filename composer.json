@@ -10,11 +10,13 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {},
     "autoload": {
         "psr-4": {
             "Jake142\\Service\\": "src"
         }
+    },
+    "require": {
+        "zircote/swagger-php": "^3.0"
     },
     "extra": {
         "laravel": {
