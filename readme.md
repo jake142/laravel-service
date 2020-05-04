@@ -144,7 +144,7 @@ config('laravel-service.<version>.<service>.<config_file>.<value>');
 
 #### Generating OpenAPI docs
 
-> php artisan laravel-service:generate-docs
+> php artisan laravel-service:generate-docs laravel-service/$version-$service
 
 The docs will be generated in the storage folder: storage/app/laravel-service/v1-sampleservice/docs/swagger.json.
 
