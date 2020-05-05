@@ -11,7 +11,7 @@ class GenerateServiceDocumentation extends Command
      *
      * @var string
      */
-    protected $signature = 'laravel-service:generate-docs {service}';
+    protected $signature = 'laravel-service:generate-docs {service} {constants?}';
 
     /**
      * The console command description.
@@ -45,21 +45,29 @@ class GenerateServiceDocumentation extends Command
         $this->info('Generating docs for service '.$service);
         $url = $composer->getUrl($service);
 
+        if($this->argument('constants')) {
+            self::defineConstants(config($this->argument('constants')) ?: []);
+        }
         $appDir = base_path($url);
         $docDir = $service.'/docs';
 
-        if (! Storage::exists($docDir) || is_writable($docDir)) {
-            // delete all existing documentation
-            if (Storage::exists($docDir)) {
-                Storage::deleteDirectory($docDir);
-            }
+        if (Storage::exists($docDir)) {
+            Storage::deleteDirectory($docDir);
+        }
 
-            Storage::makeDirectory($docDir);
+        Storage::makeDirectory($docDir);
 
             $swagger = \OpenApi\scan($appDir);
             $file = $docDir.'/swagger.json';
             $swagger->saveAs(storage_path('app/'.$file));
             $this->info('Created docs for '.$service.' in '.$file);
+    }
+    protected static function defineConstants(array $constants)
+    {
+        if (! empty($constants)) {
+            foreach ($constants as $key => $value) {
+                defined($key) || define($key, $value);
+            }
         }
     }
 }
