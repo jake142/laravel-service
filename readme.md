@@ -146,9 +146,11 @@ config('laravel-service.<version>.<service>.<config_file>.<value>');
 
 #### Generating OpenAPI docs
 
-> php artisan laravel-service:generate-docs {service} {constants?}
+> php artisan laravel-service:generate-docs {service/all} {constants?}
 
 The docs will be generated in the storage folder: storage/app/laravel-service/v1-sampleservice/docs/swagger.json.
+
+If you use all instead of a service all laravel-services will be used in the docs generation and the file be placed in storage/app/laravel-service/docs/swagger.json
 
 Constants is the path to the config where you store your constants. Eg. swagger.constants will read all constants in the config file swagger and the parameter constants.
 
