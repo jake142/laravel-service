@@ -2,6 +2,8 @@
 
 ## Release note
 
+Version 3.0.1 Added constants to open api doc generation.
+
 Version 3.0.0 Now with open api 3.0! Read more below!
 
 Version 0.2.9 Fixed bug in GenericQueue where job was not deleted from queue when processed.
