@@ -11,7 +11,7 @@ class GenerateServiceDocumentation extends Command
      *
      * @var string
      */
-    protected $signature = 'laravel-service:generate-docs {service} {constants?}';
+    protected $signature = 'laravel-service:generate-docs {service=all} {constants?}';
 
     /**
      * The console command description.
@@ -37,30 +37,36 @@ class GenerateServiceDocumentation extends Command
      */
     public function handle(Composer $composer)
     {
-        $service = $this->argument('service');
-        if(!$composer->serviceExist($service))
-            throw new \Exception('Service do not exist');
-        if(!$composer->serviceEnabled($service))
-            throw new \Exception('Enable service before generating docs');
-        $this->info('Generating docs for service '.$service);
-        $url = $composer->getUrl($service);
-
+        //Define constants if there are any
         if($this->argument('constants')) {
             self::defineConstants(config($this->argument('constants')) ?: []);
         }
-        $appDir = base_path($url);
-        $docDir = $service.'/docs';
+        $service = strtolower($this->argument('service'));
+        if($service != 'all') {
+            if(!$composer->serviceExist($service))
+                throw new \Exception('Service do not exist');
+            if(!$composer->serviceEnabled($service))
+                throw new \Exception('Enable service before generating docs');
+            $url = $composer->getUrl($service);
 
+            $appDir = base_path($url);
+            $docDir = $service.'/docs';
+        } else {
+            $appDir = base_path('Services');
+            $docDir = 'laravel-service/docs';            
+        }
+
+        $this->info('Generating docs for service '.$service);
         if (Storage::exists($docDir)) {
             Storage::deleteDirectory($docDir);
         }
 
         Storage::makeDirectory($docDir);
 
-            $swagger = \OpenApi\scan($appDir);
-            $file = $docDir.'/swagger.json';
-            $swagger->saveAs(storage_path('app/'.$file));
-            $this->info('Created docs for '.$service.' in '.$file);
+        $swagger = \OpenApi\scan($appDir);
+        $file = $docDir.'/swagger.json';
+        $swagger->saveAs(storage_path('app/'.$file));
+        $this->info('Created docs for '.$service.' in '.$file);
     }
     protected static function defineConstants(array $constants)
     {
