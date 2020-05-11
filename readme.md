@@ -158,3 +158,7 @@ If you use all instead of a service all laravel-services will be used in the doc
 Constants is the path to the config where you store your constants. Eg. swagger.constants will read all constants in the config file swagger and the parameter constants.
 
 Credits to [swagger-php](http://zircote.github.io/swagger-php/)
+
+Using readme.com? Need to use swagger feature allOf? Then you can use:
+
+artisan laravel-service:generate-docs {service/all} {constants?} --workaround-readme
