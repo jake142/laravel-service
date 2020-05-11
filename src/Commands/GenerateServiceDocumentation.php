@@ -71,10 +71,9 @@ class GenerateServiceDocumentation extends Command
         $filePath = $docDir.'/swagger.json';
 
         if ($this->option('workaround-readme')) {
-            $readmeJson = self::compileSwaggerForReadme($swagger);
             Storage::put(
                 $docDir.'/swagger.json',
-                self::compileSwaggerForReadme($swagger)
+                self::compileWorkaroundForReadme($swagger)
             );
         } else {
             $swagger->saveAs(storage_path('app/'.$filePath));
@@ -82,7 +81,7 @@ class GenerateServiceDocumentation extends Command
         $this->info('Created docs for '.$service.' in '.$filePath);
     }
 
-    protected static function compileSwaggerForReadme($swaggerInstance): string
+    protected static function compileWorkaroundForReadme($swaggerInstance): string
     {
         $swaggerJson = json_decode($swaggerInstance->toJson(), true);
         $combine     = [];
