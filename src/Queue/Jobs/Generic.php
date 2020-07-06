@@ -1,24 +1,26 @@
 <?php namespace Jake142\Service\Queue\Jobs;
 
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
 /**
  * An Generic job
  */
-trait Generic
+class Generic implements ShouldQueue
 {
+    use InteractsWithQueue, SerializesModels;
 
-    /**
-     * @var array
-     */
-    protected $data;
+    private $payload;
 
-    public function handle()
+    public function fire($job)
     {
-        //The magic happens here
+        $this->handle(json_decode($job->getRawBody(),true)['data']);
+        $job->delete();
     }
-    public function fire($data)
+
+    public function handle($payload)
     {
-        $this->data = json_decode($data->getRawBody(),true)['data'];
-        $this->handle();
-        $data->delete();
+        //Magic goes here
     }
 }

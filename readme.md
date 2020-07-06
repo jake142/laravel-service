@@ -112,31 +112,38 @@ This will disable the service which means:
 
 To call the generic queue:
 ```php
-(new GenericQueue('Services\\V1\\Test\\Jobs\\ExampleJob', ['param'=>'test'], $queue = null, $options = []))->dispatch();
+(new GenericQueue('Services\\V1\\Test\\Jobs\\ExampleJob', ['param'=>'test'], $queue = null))->dispatch();
 ```
 To run the generic job:
 
 ```php
 <?php namespace Services\V1\Test\Jobs;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-
 use Jake142\Service\Queue\Jobs\Generic as GenericJob;
 
 /**
  * An example job
  */
-class ExampleJob implements ShouldQueue
+class ExampleJob extends GenericJob
 {
-    use InteractsWithQueue, Queueable, SerializesModels, GenericJob;
 
-    public function handle() {
-        print_r($this->data);
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle($payload)
+    {
+       	try
+       	{
+        	//Your code goes here...
+            Log::info($payload['param']);
+       	}
+       	catch(\Exception $e)
+    	{
+            throw $e;
+        }
     }
-
 }
 ```
 #### Config
