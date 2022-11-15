@@ -53,7 +53,8 @@ class Composer extends BaseComposer
      */
     public function enableService($service)
     {
-        $command = array_merge((is_array($this->findComposer()) ? $this->findComposer():[$this->findComposer()]), ['require'], [$service, 'dev-master']);
+        //$command = array_merge((is_array($this->findComposer()) ? $this->findComposer():[$this->findComposer()]), ['require'], [$service, 'dev-master']);
+        $command = array_merge((is_array($this->findComposer()) ? $this->findComposer():[$this->findComposer()]), ['require'], [$service]);
         $process = $this->createProcess($command);
         $process->run();
         if (!$process->isSuccessful()) {

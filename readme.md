@@ -1,6 +1,8 @@
 ## This package is considered beeing in an alpha state and needs more testing!
 
 ## Release note
+Version 3.0.5 Removed dev-master from composer install.
+
 Version 3.0.4 Made changes to the generic queues.
 
 Version 3.0.3 Special support for readme.com to support swagger features.
