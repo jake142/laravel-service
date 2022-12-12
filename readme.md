@@ -1,61 +1,3 @@
-## This package is considered beeing in an alpha state and needs more testing!
-
-## Release note
-Version 3.0.5 Removed dev-master from composer install.
-
-Version 3.0.4 Made changes to the generic queues.
-
-Version 3.0.3 Special support for readme.com to support swagger features.
-
-Version 3.0.2 Enabled all services for open api doc generation.
-
-Version 3.0.1 Added constants to open api doc generation.
-
-Version 3.0.0 Now with open api 3.0! Read more below!
-
-Version 0.2.9 Fixed bug in GenericQueue where job was not deleted from queue when processed.
-
-Version 0.2.8 Fixed the bug in 0.2.7 whereas $this->findComposer() is an array in laravel 5.8 and above and a string in laravel 5.7 and below.
-
-Version 0.2.7 Override the deprecated function getProcess of the Composer class to support laravel 5.8 and above.
-
-Version 0.2.6 the dev-master param was added to the composer require command run when you enable a service.
-
-Version 0.2.5 Fixed broken update package command. Now you should be able to run
-
-> php artisan laravel-service:update-package
-
-If you have been using version 0.2.2 -> 0.2.4 you will have to fix your composer files and phpunit file manually. Sorry!
-
-```
-Note: If you have dependencies between your services (eg. common, core services etc) you should manually disable all service before running the laravel-service:update-package command.
-```
-
-Version 0.2.3 service:make command renamed to laravel-service:make.
-
-Version 0.2.2 Due to Composer 2.x more strict naming rules this package has new naming of the services. I have created an artisan upgrade command to make the changes for you. The command will disable all your services and you have to manually enable them when you have run the command.
-
-> php artisan laravel-service:update-package
-
-I have also updated all commands with the prefix laravel-service (instead of service as before)
-
-Version 0.2.1 enabled automatic update of service configs. More info below.
-
-Version 0.2.0 includes generic jobs and queues. This is needed so one service can push data on to a queue without knowing about the code in another service job.
-
-Version 0.1.X is a complete rewrite of the package. Version 0.1.X now creates each service as a composer package and uses composer to add it to your project. It is tested in laravel version 5.6. Previous versions are not supported anymore.
-
-PLEASE NOTE
-
-laravel-service will add:
-
-```json
-"minimum-stability": "dev",
-"prefer-stable": true
-```
-
-to your composer.json file.
-
 ## Laravel Service
 
 A package to divide Laravel into smaller services. Then main goal of this package is:
@@ -173,3 +115,59 @@ Credits to [swagger-php](http://zircote.github.io/swagger-php/)
 Using readme.com? Need to use swagger feature allOf? Then you can use:
 
 artisan laravel-service:generate-docs {service/all} {constants?} --workaround-readme
+
+## Release note
+Version 3.0.5 Removed dev-master from composer install.
+
+Version 3.0.4 Made changes to the generic queues.
+
+Version 3.0.3 Special support for readme.com to support swagger features.
+
+Version 3.0.2 Enabled all services for open api doc generation.
+
+Version 3.0.1 Added constants to open api doc generation.
+
+Version 3.0.0 Now with open api 3.0! Read more below!
+
+Version 0.2.9 Fixed bug in GenericQueue where job was not deleted from queue when processed.
+
+Version 0.2.8 Fixed the bug in 0.2.7 whereas $this->findComposer() is an array in laravel 5.8 and above and a string in laravel 5.7 and below.
+
+Version 0.2.7 Override the deprecated function getProcess of the Composer class to support laravel 5.8 and above.
+
+Version 0.2.6 the dev-master param was added to the composer require command run when you enable a service.
+
+Version 0.2.5 Fixed broken update package command. Now you should be able to run
+
+> php artisan laravel-service:update-package
+
+If you have been using version 0.2.2 -> 0.2.4 you will have to fix your composer files and phpunit file manually. Sorry!
+
+```
+Note: If you have dependencies between your services (eg. common, core services etc) you should manually disable all service before running the laravel-service:update-package command.
+```
+
+Version 0.2.3 service:make command renamed to laravel-service:make.
+
+Version 0.2.2 Due to Composer 2.x more strict naming rules this package has new naming of the services. I have created an artisan upgrade command to make the changes for you. The command will disable all your services and you have to manually enable them when you have run the command.
+
+> php artisan laravel-service:update-package
+
+I have also updated all commands with the prefix laravel-service (instead of service as before)
+
+Version 0.2.1 enabled automatic update of service configs. More info below.
+
+Version 0.2.0 includes generic jobs and queues. This is needed so one service can push data on to a queue without knowing about the code in another service job.
+
+Version 0.1.X is a complete rewrite of the package. Version 0.1.X now creates each service as a composer package and uses composer to add it to your project. It is tested in laravel version 5.6. Previous versions are not supported anymore.
+
+PLEASE NOTE
+
+laravel-service will add:
+
+```json
+"minimum-stability": "dev",
+"prefer-stable": true
+```
+
+to your composer.json file.
