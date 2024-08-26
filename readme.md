@@ -117,6 +117,8 @@ Using readme.com? Need to use swagger feature allOf? Then you can use:
 artisan laravel-service:generate-docs {service/all} {constants?} --workaround-readme
 
 ## Release note
+Version 3.0.6 -> Version 3.0.9 Updated swagger dependency.
+
 Version 3.0.5 Removed dev-master from composer install.
 
 Version 3.0.4 Made changes to the generic queues.

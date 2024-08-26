@@ -3,6 +3,9 @@
 use Storage;
 use Jake142\Service\Composer;
 use Illuminate\Console\Command;
+use OpenApi\Generator;
+use OpenApi\Analysis;
+use OpenApi\Annotations\OpenApi;
 
 class GenerateServiceDocumentation extends Command
 {
@@ -37,10 +40,6 @@ class GenerateServiceDocumentation extends Command
      */
     public function handle(Composer $composer)
     {
-        //Define constants if there are any
-        if ($this->argument('constants')) {
-            self::defineConstants(config($this->argument('constants')) ?: []);
-        }
         $service = strtolower($this->argument('service'));
         if ('all' != $service) {
             if (!$composer->serviceExist($service)) {
@@ -67,16 +66,30 @@ class GenerateServiceDocumentation extends Command
 
         Storage::makeDirectory($docDir);
 
-        $swagger  = \OpenApi\scan($appDir);
+
+        // Create a new instance of the Generator class
+        $generator = new \OpenApi\Generator();
+
+        // Set the analyzer to the legacy TokenAnalyser
+        $generator->setAnalyser(new \OpenApi\Analysers\TokenAnalyser());
+
+        // Scan the project directory using the generator instance
+        $swagger = $generator->generate([$appDir]);
+
         $filePath = $docDir.'/swagger.json';
 
         if ($this->option('workaround-readme')) {
             Storage::put(
-                $docDir.'/swagger.json',
+                $filePath,
                 self::compileWorkaroundForReadme($swagger)
             );
         } else {
             $swagger->saveAs(storage_path('app/'.$filePath));
+        }
+
+        //Define constants if there are any
+        if ($this->argument('constants')) {
+            self::defineConstants(config($this->argument('constants')) ?: [], $filePath);
         }
         $this->info('Created docs for '.$service.' in '.$filePath);
     }
@@ -129,12 +142,17 @@ class GenerateServiceDocumentation extends Command
         return json_encode($swaggerJson);
     }
 
-    protected static function defineConstants(array $constants)
+    protected static function defineConstants(array $constants, string $filePath)
     {
         if (!empty($constants)) {
+            $swaggerFile = Storage::get($filePath);
             foreach ($constants as $key => $value) {
-                defined($key) || define($key, $value);
+                $swaggerFile = str_replace($key, $value, $swaggerFile);
             }
+            Storage::put(
+                $filePath,
+                $swaggerFile
+            );
         }
     }
 }
