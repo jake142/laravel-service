@@ -19,13 +19,103 @@ class Composer extends BaseComposer
      * Add a service
      *
      */
+    public function getPackageName($version, $name)
+    {
+        return 'laravel-service/'.strtolower($version.'-'.$name);
+    }
+
+    /**
+     * Add a path repository for a service (idempotent).
+     */
     public function addService($version, $name)
     {
+        $packageName = $this->getPackageName($version, $name);
+        $path = 'Services/'.$version.'/'.$name;
         $composerData = $this->readComposer();
-        $composerData['repositories'][] = ['name'=>'laravel-service/'.strtolower($version.'-'.$name), 'type'=>'path','url'=>'Services/'.$version.'/'.$name,'options'=>['symlink'=>true]];
+
+        if (isset($composerData['repositories'])) {
+            foreach ($composerData['repositories'] as $repository) {
+                if ((isset($repository['name']) && $repository['name'] === $packageName)
+                    || (isset($repository['url']) && $repository['url'] === $path)) {
+                    return;
+                }
+            }
+        } else {
+            $composerData['repositories'] = [];
+        }
+
+        $composerData['repositories'][] = [
+            'name' => $packageName,
+            'type' => 'path',
+            'url' => $path,
+            'options' => ['symlink' => true],
+        ];
         $composerData['minimum-stability'] = 'dev';
         $composerData['prefer-stable'] = true;
         $this->writeToDisk($composerData);
+    }
+
+    /**
+     * Find a service on disk by package name (laravel-service/v1-foo).
+     *
+     * @return array{version: string, name: string}|null
+     */
+    public function discoverServiceOnDisk($packageName)
+    {
+        if (!preg_match('#^laravel-service/(.+)$#', strtolower($packageName), $matches)) {
+            return null;
+        }
+
+        $slug = $matches[1];
+        $servicesPath = base_path('Services');
+
+        if (!is_dir($servicesPath)) {
+            return null;
+        }
+
+        foreach (new \DirectoryIterator($servicesPath) as $versionDir) {
+            if (!$versionDir->isDir() || $versionDir->isDot()) {
+                continue;
+            }
+
+            $version = $versionDir->getFilename();
+
+            foreach (new \DirectoryIterator($versionDir->getPathname()) as $serviceDir) {
+                if (!$serviceDir->isDir() || $serviceDir->isDot()) {
+                    continue;
+                }
+
+                $name = $serviceDir->getFilename();
+
+                if (strtolower($version.'-'.$name) === $slug) {
+                    return ['version' => $version, 'name' => $name];
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Register path repo from composer.json or from Services/ on disk.
+     */
+    public function registerServiceFromPackageName($packageName)
+    {
+        $packageName = strtolower($packageName);
+
+        if ($this->serviceExist($packageName)) {
+            return true;
+        }
+
+        $discovered = $this->discoverServiceOnDisk($packageName);
+
+        if ($discovered === null) {
+            return false;
+        }
+
+        $this->addService($discovered['version'], $discovered['name']);
+
+        return true;
     }
     /**
      * List services
@@ -124,7 +214,7 @@ class Composer extends BaseComposer
      */
     public function writeToDisk(array $composerData)
     {
-        $this->files->put(base_path().'/composer.json', json_encode($composerData,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_SLASHES));
+        $this->files->put(base_path().'/composer.json', json_encode($composerData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
     /**
      * Override the deprecated method of get Process

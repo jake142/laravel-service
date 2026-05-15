@@ -1,7 +1,13 @@
 <?php
 
 $configs = [];
-$versions = new DirectoryIterator(base_path().'/Services');
+$servicesPath = base_path().'/Services';
+
+if (!is_dir($servicesPath)) {
+    return $configs;
+}
+
+$versions = new DirectoryIterator($servicesPath);
 foreach ($versions as $versionDir) {
     if ($versionDir->isDir() && !$versionDir->isDot()) {
         $version =  $versionDir->getFilename();

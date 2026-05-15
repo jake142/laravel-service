@@ -1,7 +1,6 @@
 <?php namespace Jake142\Service\Commands;
 
 use Illuminate\Console\Command;
-use Jake142\Service\Composer;
 use Jake142\Service\Commands\Generators\ServiceGenerator;
 use Jake142\Service\Commands\Generators\ComposerGenerator;
 use Jake142\Service\Commands\Generators\ServiceProviderGenerator;
@@ -10,7 +9,6 @@ use Jake142\Service\Commands\Generators\ControllerGenerator;
 use Jake142\Service\Commands\Generators\JobGenerator;
 use Jake142\Service\Commands\Generators\TestGenerator;
 use Illuminate\Filesystem\Filesystem;
-use Artisan;
 
 class MakeService extends Command
 {
@@ -39,7 +37,7 @@ class MakeService extends Command
      * @see fire()
      * @return void
      */
-    public function handle(Composer $composer){
+    public function handle(){
         try
         {
             $name = $this->ask('Name your service');
@@ -70,9 +68,9 @@ class MakeService extends Command
             if($createTest=='Yes')
                 $this->createTest($name, $version);
 
+            $packageName = 'laravel-service/'.strtolower($version.'-'.$name);
             $this->info('The service '.$name.' is ready to go. Fill it with models, middlewares and loads of love!');
-            
-            $composer->addService($version, $name);
+            $this->info('Enable it with: php artisan laravel-service:enable '.$packageName);
 
         }
         catch(\Exception $e)
@@ -118,8 +116,15 @@ class MakeService extends Command
      * @return void
      */
     private function emptyRoutes($name, $version) {
-        $this->filesystem->put(base_path().'/Services/'.$version.'/'.$name.'/api_routes.stub', '//Your routes goes here');
-        $this->filesystem->put(base_path().'/Services/'.$version.'/'.$name.'/web_routes.stub', '//Your routes goes here');
+        $routesDir = base_path().'/Services/'.$version.'/'.$name.'/routes';
+        $this->filesystem->ensureDirectoryExists($routesDir);
+        $content = "<?php\n\n// Your routes go here\n";
+        if (!$this->filesystem->exists($routesDir.'/api.php')) {
+            $this->filesystem->put($routesDir.'/api.php', $content);
+        }
+        if (!$this->filesystem->exists($routesDir.'/web.php')) {
+            $this->filesystem->put($routesDir.'/web.php', $content);
+        }
     }
     /**
      * Create the controller

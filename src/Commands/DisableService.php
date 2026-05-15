@@ -29,7 +29,7 @@ class DisableService extends Command
     public function handle(Composer $composer, PhpunitXML $phpUnitXML){
         try
         {
-            $service = $this->argument('service');
+            $service = strtolower($this->argument('service'));
             if(!$composer->serviceExist($service))
                 throw new \Exception('Service do not exist');
             if(!$composer->serviceEnabled($service))

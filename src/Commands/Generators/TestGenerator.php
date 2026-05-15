@@ -37,7 +37,7 @@ class TestGenerator
     public function run()
     {
         $replaces = [
-            'namespace' => 'namespace Services\\'.$this->version.'\\'.$this->name.'\\Test',
+            'namespace' => 'namespace Services\\'.$this->version.'\\'.$this->name.'\\Tests',
             'service' => strtolower($this->name),
             'version' => strtolower($this->version)
         ];

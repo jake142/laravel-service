@@ -29,9 +29,10 @@ class EnableService extends Command
     public function handle(Composer $composer, PhpunitXML $phpUnitXML){
         try
         {
-            $service = $this->argument('service');
-            if(!$composer->serviceExist($service))
+            $service = strtolower($this->argument('service'));
+            if (!$composer->registerServiceFromPackageName($service)) {
                 throw new \Exception('Service do not exist');
+            }
             if($composer->serviceEnabled($service))
                 throw new \Exception('Service is already enabled');
             $this->info('Enabling '.$service.'...');

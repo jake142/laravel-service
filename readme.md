@@ -24,9 +24,9 @@ This will start a setup wizard where you define:
 2. The version of the service (eg. V1)
 3. If you want a sample controller (recommended)
 4. If you want a sample job (recommended)
-4. If you want a sample test (recommended)
+5. If you want a sample test (recommended)
 
-The service is now created (added as a repository to your composer.json file), but not enabled.
+The service files are created under `Services/{version}/{name}/` but the service is **not** enabled yet. Your root `composer.json` is **not** modified by `make` (see release notes 3.1.0).
 
 #### Enable a service
 
@@ -34,10 +34,26 @@ To enable a service run:
 
 > php artisan laravel-service:enable laravel-service/$version-$service (eg. laravel-service/v1-sampleservice)
 
+Use the lowercase package name (`laravel-service/v1-sampleservice`), not the folder path.
+
 This will enable the service which means:
 
-1. Composer runs require on your service
-2. The tests will be added to the phpunit.xml and therefore able to run with the phpunit command
+1. Registers the path repository in your root `composer.json` (if not already registered)
+2. Composer runs `require` on your service
+3. The tests will be added to the phpunit.xml and therefore able to run with the phpunit command
+
+If the service exists on disk under `Services/` but is not yet in `composer.json` (for example after merging a branch), `enable` will register it automatically before requiring it.
+
+#### Working across git branches
+
+Service **code** lives in `Services/` and follows your git branches. Composer and PHPUnit state live in the host app and are shared locally between checkouts.
+
+Recommended workflow:
+
+1. On a feature branch (e.g. sandbox): `php artisan laravel-service:make` and commit the new `Services/...` folder.
+2. Merge that branch into the branch where you want the service (e.g. master).
+3. On the target branch: `php artisan laravel-service:enable laravel-service/v1-myservice` (no need to run `make` again).
+4. After switching branches, run `composer install` if `composer.lock` or enabled services differ, then `php artisan laravel-service:list`.
 
 #### Disable a service
 
@@ -117,6 +133,21 @@ Using readme.com? Need to use swagger feature allOf? Then you can use:
 artisan laravel-service:generate-docs {service/all} {constants?} --workaround-readme
 
 ## Release note
+
+### Version 3.1.0
+
+**Workflow change:** `laravel-service:make` no longer adds a path repository to your root `composer.json`. Registration happens when you run `laravel-service:enable`. This makes it safer to create services on one git branch and enable them on another after merge.
+
+**`laravel-service:enable`:** If the service folder exists under `Services/` but is missing from `composer.json`, it is registered automatically (matched by package name, e.g. `laravel-service/v1-myservice`).
+
+**Bug fixes:**
+
+- Skipping the sample controller now creates `routes/api.php` and `routes/web.php` (previously wrote useless `api_routes.stub` / `web_routes.stub` files that were never loaded).
+- Generated tests use the `Tests` namespace segment to match the `tests/` directory.
+- Aggregated config no longer errors when the `Services/` directory does not exist yet.
+
+**Unchanged for existing projects:** Services already listed in `composer.json` `repositories` behave as before. You do not need to re-run `make`.
+
 Version 3.0.6 -> Version 3.0.9 Updated swagger dependency.
 
 Version 3.0.5 Removed dev-master from composer install.
@@ -165,11 +196,11 @@ Version 0.1.X is a complete rewrite of the package. Version 0.1.X now creates ea
 
 PLEASE NOTE
 
-laravel-service will add:
+When you **enable** a service, laravel-service will add (if not already present):
 
 ```json
 "minimum-stability": "dev",
 "prefer-stable": true
 ```
 
-to your composer.json file.
+to your composer.json file, along with the path repository for that service.
