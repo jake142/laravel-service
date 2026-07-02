@@ -53,7 +53,13 @@ Recommended workflow:
 1. On a feature branch (e.g. sandbox): `php artisan laravel-service:make` and commit the new `Services/...` folder.
 2. Merge that branch into the branch where you want the service (e.g. master).
 3. On the target branch: `php artisan laravel-service:enable laravel-service/v1-myservice` (no need to run `make` again).
-4. After switching branches, run `composer install` if `composer.lock` or enabled services differ, then `php artisan laravel-service:list`.
+4. After switching branches, run `php artisan laravel-service:sync` (normalizes constraints and updates path packages), or `composer install` if you only need to match `composer.lock`.
+
+#### Sync after branch switch
+
+> php artisan laravel-service:sync
+
+Path packages resolve to `dev-{branch}` (e.g. `dev-main`, `dev-sandbox`). This command rewrites all `laravel-service/*` constraints to `@dev` and runs `composer update laravel-service/*`, so you do not need manual edits to root `composer.json` when switching branches.
 
 #### Disable a service
 
@@ -133,6 +139,12 @@ Using readme.com? Need to use swagger feature allOf? Then you can use:
 artisan laravel-service:generate-docs {service/all} {constants?} --workaround-readme
 
 ## Release note
+
+### Version 3.1.1
+
+**Branch-safe enable/disable:** `enable` and `disable` now use `@dev` constraints and `--ignore-platform-reqs`, so path packages work regardless of git branch name and dev containers missing optional PHP extensions.
+
+**`laravel-service:sync`:** New command to normalize all `laravel-service/*` constraints to `@dev` and re-resolve path packages after switching git branches.
 
 ### Version 3.1.0
 

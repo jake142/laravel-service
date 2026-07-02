@@ -143,8 +143,13 @@ class Composer extends BaseComposer
      */
     public function enableService($service)
     {
-        //$command = array_merge((is_array($this->findComposer()) ? $this->findComposer():[$this->findComposer()]), ['require'], [$service, 'dev-master']);
-        $command = array_merge((is_array($this->findComposer()) ? $this->findComposer():[$this->findComposer()]), ['require'], [$service]);
+        $service = strtolower($service);
+        $this->normalizeLaravelServiceConstraints();
+
+        $command = array_merge(
+            (is_array($this->findComposer()) ? $this->findComposer() : [$this->findComposer()]),
+            ['require', $service.':@dev', '--ignore-platform-reqs']
+        );
         $process = $this->createProcess($command);
         $process->run();
         if (!$process->isSuccessful()) {
@@ -157,7 +162,62 @@ class Composer extends BaseComposer
      */
     public function disableService($service)
     {
-        $command = array_merge((is_array($this->findComposer()) ? $this->findComposer():[$this->findComposer()]), ['remove'], [$service]);
+        $service = strtolower($service);
+        $this->normalizeLaravelServiceConstraints();
+
+        $command = array_merge(
+            (is_array($this->findComposer()) ? $this->findComposer() : [$this->findComposer()]),
+            ['remove', $service, '--ignore-platform-reqs']
+        );
+        $process = $this->createProcess($command);
+        $process->run();
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+    }
+
+    /**
+     * Path-repo versions follow the current git branch (dev-main, dev-sandbox, …).
+     * Normalize all laravel-service/* constraints to @dev so branch switches work.
+     */
+    public function normalizeLaravelServiceConstraints()
+    {
+        $composerData = $this->readComposer();
+        $changed = false;
+
+        if (!isset($composerData['require'])) {
+            return;
+        }
+
+        foreach (array_keys($composerData['require']) as $package) {
+            if (strpos($package, 'laravel-service/') !== 0) {
+                continue;
+            }
+
+            if (($composerData['require'][$package] ?? null) === '@dev') {
+                continue;
+            }
+
+            $composerData['require'][$package] = '@dev';
+            $changed = true;
+        }
+
+        if ($changed) {
+            $this->writeToDisk($composerData);
+        }
+    }
+
+    /**
+     * Re-resolve path-repo packages after branch switches (updates composer.lock).
+     */
+    public function syncLaravelServices()
+    {
+        $this->normalizeLaravelServiceConstraints();
+
+        $command = array_merge(
+            (is_array($this->findComposer()) ? $this->findComposer() : [$this->findComposer()]),
+            ['update', 'laravel-service/*', '--ignore-platform-reqs']
+        );
         $process = $this->createProcess($command);
         $process->run();
         if (!$process->isSuccessful()) {

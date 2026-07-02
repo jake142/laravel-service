@@ -7,6 +7,7 @@ use Jake142\Service\Commands\EnableService;
 use Jake142\Service\Commands\DisableService;
 use Jake142\Service\Commands\UpdatePackage;
 use Jake142\Service\Commands\GenerateServiceDocumentation;
+use Jake142\Service\Commands\SyncServices;
 use Jake142\Service\Composer;
 
 class ServiceProvider extends BaseServiceProvider
@@ -30,7 +31,8 @@ class ServiceProvider extends BaseServiceProvider
                 EnableService::class,
                 DisableService::class,
                 UpdatePackage::class,
-                GenerateServiceDocumentation::class
+                GenerateServiceDocumentation::class,
+                SyncServices::class
             ]);
         }
     }
